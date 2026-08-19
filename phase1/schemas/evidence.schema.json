@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://myntra-nextleap/evidence.schema.json",
+  "title": "Evidence Packet",
+  "description": "Structured extraction from one relevant conversation. Preserves the three-level distinction: said (quote) -> inferred (behaviours/barriers) -> concluded (opportunity hypothesis). See problemstatementbrief.md section 6.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "packet_id", "conversation_id", "source", "source_url", "quote",
+    "intent", "behaviours", "barriers", "unmet_needs", "user_role",
+    "funnel_stage", "segment_hints", "confidence", "extractor_version"
+  ],
+  "properties": {
+    "packet_id": { "type": "string", "pattern": "^EP-[0-9]+$" },
+    "conversation_id": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "enum": ["app_store", "google_play", "reddit", "youtube_comments", "forums_blogs", "manual_csv"] },
+    "source_url": { "type": "string", "format": "uri" },
+    "quote": { "type": "string", "minLength": 1 },
+    "quote_char_start": { "type": "integer", "minimum": 0 },
+    "quote_char_end": { "type": "integer", "minimum": 0 },
+    "intent": { "type": "string", "enum": ["purchase", "bookmark", "save_for_later", "occasion", "gift", "unknown"] },
+    "behaviours": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^BEH-[0-9]+$|^OTH$" },
+      "minItems": 0
+    },
+    "barriers": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^PB-[0-9]+$|^NONE-STATED$|^OTH$" },
+      "minItems": 0
+    },
+    "unmet_needs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 0
+    },
+    "user_role": { "type": "string", "enum": ["self", "other", "unknown"] },
+    "funnel_stage": { "type": "string", "enum": ["saved", "evaluating", "hesitating", "abandoned", "purchased", "unknown"] },
+    "segment_hints": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^SEG-[0-9]+$|^OTH$" },
+      "minItems": 0
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["high", "medium", "low"]
+      }
+    },
+    "extractor_version": { "type": "string", "minLength": 1 },
+    "three_level": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "said": { "type": "string", "description": "Verbatim quote (duplicate of top-level quote for display)" },
+        "inferred": { "type": "string", "description": "Structured behaviour we reasonably infer" },
+        "concluded": { "type": "string", "description": "Barrier / opportunity hypothesis needing corroboration" }
+      },
+      "required": ["said", "inferred", "concluded"]
+    }
+  }
+}

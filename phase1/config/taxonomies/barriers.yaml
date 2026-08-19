@@ -1,0 +1,95 @@
+# Barrier Taxonomy (Phase 1) — Hypothesis Library
+# Why does a user NOT purchase a wishlisted product?
+# These are HYPOTHESES to test against collected evidence (problemstatementbrief.md, Section 3.2).
+# The engine must discover which barriers actually appear repeatedly — it must not force-fit these.
+
+barriers:
+  - id: PB-01
+    name: fit_uncertainty
+    label: "Uncertainty about fit"
+    description: Not sure the item fits the body type properly.
+
+  - id: PB-02
+    name: size_uncertainty
+    label: "Uncertainty about size"
+    description: Not sure which size to pick.
+
+  - id: PB-03
+    name: quality_uncertainty
+    label: "Uncertainty about quality"
+    description: Worried the material/colour/finish will not match expectations.
+
+  - id: PB-04
+    name: reality_uncertainty
+    label: "Uncertainty about how it looks in reality"
+    description: Photos/listing do not convince how the product actually looks.
+
+  - id: PB-05
+    name: styling_uncertainty
+    label: "Uncertainty about styling / how to wear it"
+    description: Not sure how to style or pair the item.
+
+  - id: PB-06
+    name: occasion_uncertainty
+    label: "Uncertainty about occasion suitability"
+    description: Not sure whether the item is appropriate for the intended occasion.
+
+  - id: PB-07
+    name: review_doubt
+    label: "Uncertainty about reviews"
+    description: Reviews are missing, sparse, mixed, or untrusted.
+
+  - id: PB-08
+    name: authenticity_concern
+    label: "Uncertainty about authenticity"
+    description: Worried the product may be fake or different from the brand.
+
+  - id: PB-09
+    name: price_uncertainty
+    label: "Price uncertainty / waiting for discount"
+    description: Waiting for a price drop or unsure the price is fair.
+
+  - id: PB-10
+    name: spend_hesitation
+    label: "Waiting before spending"
+    description: General hesitation to spend money at this time.
+
+  - id: PB-11
+    name: comparison_bloat
+    label: "Comparison with another product"
+    description: Unable to decide between this item and alternatives.
+
+  - id: PB-12
+    name: social_validation_missing
+    label: "Waiting for social validation"
+    description: Waiting for someone else's approval or opinion before buying.
+
+  - id: PB-13
+    name: availability_issue
+    label: "Product availability"
+    description: Size/colour/stock unavailable when ready to buy.
+
+  - id: PB-14
+    name: delivery_concern
+    label: "Delivery concerns"
+    description: Worried about shipping time, cost, or reliability.
+
+  - id: PB-15
+    name: return_concern
+    label: "Return / exchange concerns"
+    description: Worried returns/exchanges are hard or costly.
+
+  - id: PB-16
+    name: low_urgency
+    label: "Lack of urgency"
+    description: No immediate need; purchase keeps getting postponed.
+
+  - id: PB-17
+    name: forgetting
+    label: "Simply forgetting the product"
+    description: User saves the item and never revisits it.
+
+  - id: PB-18
+    name: pure_bookmarking
+    label: "Wishlist used as pure bookmark"
+    description: No purchase intent at all; wishlist is a collection/bookmark function.

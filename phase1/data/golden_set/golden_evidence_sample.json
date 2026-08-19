@@ -1,0 +1,74 @@
+{
+  "description": "Starter sample of labelled evidence packets for Phase 1 validation and as the seed for the golden set (Phase 3/4 expansion target: 20-30 per classifier/extractor).",
+  "evidence_packets": [
+    {
+      "packet_id": "EP-0001",
+      "conversation_id": "reddit_3421",
+      "source": "reddit",
+      "source_url": "https://www.reddit.com/r/IndianFashion/comments/example1",
+      "quote": "I loved the dress but wasn't sure about the size, so I saved it and kept looking.",
+      "quote_char_start": 0,
+      "quote_char_end": 71,
+      "intent": "purchase",
+      "behaviours": ["BEH-01", "BEH-04"],
+      "barriers": ["PB-01"],
+      "unmet_needs": ["reliable size-to-fit guidance"],
+      "user_role": "self",
+      "funnel_stage": "hesitating",
+      "segment_hints": ["SEG-03", "SEG-10"],
+      "confidence": {"behaviours": "high", "barriers": "high", "intent": "high"},
+      "extractor_version": "0.1.0",
+      "three_level": {
+        "said": "I loved the dress but wasn't sure about the size, so I saved it and kept looking.",
+        "inferred": "User shortlists the dress and continues browsing.",
+        "concluded": "Size confidence may delay wishlist-to-purchase conversion."
+      }
+    },
+    {
+      "packet_id": "EP-0002",
+      "conversation_id": "play_8890",
+      "source": "google_play",
+      "source_url": "https://play.google.com/store/apps/details?id=com.myntra.android&reviewid=8890",
+      "quote": "Wishlist is useless, I just add things and forget about them.",
+      "quote_char_start": 0,
+      "quote_char_end": 50,
+      "intent": "save_for_later",
+      "behaviours": ["BEH-08"],
+      "barriers": ["PB-17"],
+      "unmet_needs": ["reminders or relevance signals for saved items"],
+      "user_role": "self",
+      "funnel_stage": "abandoned",
+      "segment_hints": ["SEG-03"],
+      "confidence": {"behaviours": "medium", "barriers": "medium", "intent": "medium"},
+      "extractor_version": "0.1.0",
+      "three_level": {
+        "said": "Wishlist is useless, I just add things and forget about them.",
+        "inferred": "User uses wishlist as a bookmark and does not revisit items.",
+        "concluded": "Forgetting may explain non-purchase, but needs corroboration."
+      }
+    },
+    {
+      "packet_id": "EP-0003",
+      "conversation_id": "appstore_1234",
+      "source": "app_store",
+      "source_url": "https://apps.apple.com/in/app/myntra/id907676859?mt=8",
+      "quote": "Keep saving sarees for my sister's wedding but I keep checking reviews to be sure the colour matches.",
+      "quote_char_start": 0,
+      "quote_char_end": 86,
+      "intent": "occasion",
+      "behaviours": ["BEH-07", "BEH-12", "BEH-01"],
+      "barriers": ["PB-03", "PB-07"],
+      "unmet_needs": ["trustworthy colour representation; review confidence"],
+      "user_role": "self",
+      "funnel_stage": "evaluating",
+      "segment_hints": ["SEG-04", "SEG-08"],
+      "confidence": {"behaviours": "high", "barriers": "medium", "intent": "high"},
+      "extractor_version": "0.1.0",
+      "three_level": {
+        "said": "Keep saving sarees for my sister's wedding but I keep checking reviews to be sure the colour matches.",
+        "inferred": "Occasion-driven shopper saves options and validates colour/quality via reviews.",
+        "concluded": "Review and colour-representation confidence may gate occasion purchases."
+      }
+    }
+  ]
+}

@@ -32,4 +32,8 @@ Corner cases for every pipeline stage (collection → extraction → scoring →
 
 ---
 
-Plus cross-cutting concerns (opportunity scoring, confidence tiers, ethics), data model, testing strategy, risks, and success criteria.
+Then cross-cutting concerns (opportunity scoring, confidence tiers, ethics), data model, testing strategy, risks, and success criteria are inside the architecture plan.
+
+### 4. Code Structure — phase folders (`phase1/` … `phase6/`)
+
+Each phase builds in its own folder with its own `README.md`. **Phase 1 is implemented** — see [`phase1/README.md`](phase1/README.md): taxonomies, sources plan, evidence schema, validation script, golden-set seed, and passing tests.

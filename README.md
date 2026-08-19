@@ -13,9 +13,11 @@ This repository contains the NextLeap Graduation Project: an AI-powered **Discov
 
 ## Planned Phases
 
-1. Discovery Foundation & Problem Framing
-2. Data Collection Layer
-3. Cleaning & Relevance Filtering
-4. Behaviour, Barrier & Unmet-Need Extraction
-5. Segmentation, Theme Clustering & Quantification
-6. Opportunity Ranking, Evidence DB & Discovery Dashboard
+Each phase lives in its own folder. Phase 1 is implemented.
+
+1. Discovery Foundation & Problem Framing → [phase1/README.md](phase1/README.md)
+2. Data Collection Layer → phase2 (placeholder)
+3. Cleaning & Relevance Filtering → phase3 (placeholder)
+4. Behaviour, Barrier & Unmet-Need Extraction → phase4 (placeholder)
+5. Segmentation, Theme Clustering & Quantification → phase5 (placeholder)
+6. Opportunity Ranking, Evidence DB & Discovery Dashboard → phase6 (placeholder)

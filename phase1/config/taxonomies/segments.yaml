@@ -1,0 +1,55 @@
+# Candidate Segmentation Dimensions (Phase 1)
+# These are candidate dimensions to TEST against evidence — NOT assumed findings.
+# Segments must emerge from the data in Phase 5. This file only pre-registers candidates
+# so extraction (Phase 4) knows which user-context signals to capture.
+
+segments:
+  - id: SEG-01
+    name: first_time_shopper
+    label: "First-time shoppers"
+    signal: "Mentions being new to the platform / first order / unfamiliarity"
+
+  - id: SEG-02
+    name: frequent_shopper
+    label: "Frequent shoppers"
+    signal: "Mentions ordering often, comparing across apps, expert-level familiarity"
+
+  - id: SEG-03
+    name: high_wishlist_user
+    label: "High-frequency wishlist users"
+    signal: "References large wishlists / saving many items at once"
+
+  - id: SEG-04
+    name: occasion_shopper
+    label: "Occasion-based shoppers"
+    signal: "States a specific event driving the purchase (wedding, festival, trip)"
+
+  - id: SEG-05
+    name: shopping_for_self
+    label: "Shopping for themselves"
+    signal: "First-person need statements"
+
+  - id: SEG-06
+    name: shopping_for_others
+    label: "Shopping for others (gift)"
+    signal: "References gift, present, for mom/sister/friend"
+
+  - id: SEG-07
+    name: budget_conscious
+    label: "Budget-conscious users"
+    signal: "Mentions budget, price, sale, discount, value"
+
+  - id: SEG-08
+    name: fashion_conscious
+    label: "Fashion-conscious users"
+    signal: "Mentions trends, styling, brand, aesthetics, matching outfits"
+
+  - id: SEG-09
+    name: multi_product_comparer
+    label: "Multi-product comparers"
+    signal: "Saves/compares multiple similar items before deciding"
+
+  - id: SEG-10
+    name: repeated_sizing_concern
+    label: "Users with repeated sizing concerns"
+    signal: "Repeated mentions of size/fit uncertainty"

@@ -1,0 +1,53 @@
+# Data Sources — selection and access plan (Phase 1)
+# Priorities and access methods for publicly available conversations.
+# Status: proposed / confirmed / blocked. Confirm access terms before Phase 2 collection.
+
+sources:
+  - id: SRC-01
+    name: google_play
+    label: "Google Play Store reviews"
+    focus: "Shopping experience, wishlist behaviour, product discovery, purchase hesitation,
+            fit/size, reviews, returns, quality, decision-making (mobile behaviour)"
+    access: "google-play-scraper (Python) or public endpoints"
+    status: proposed
+    notes: "Search app ids for Myntra, AJIO, Nykaa Fashion where reviews are public"
+
+  - id: SRC-02
+    name: app_store
+    label: "Apple App Store reviews"
+    focus: "Same categories as Google Play, iOS-specific behaviour"
+    access: "app-store-scraper (Python) or public RSS feed"
+    status: proposed
+    notes: "App Store RSS feed returns recent reviews; deeper history may need API"
+
+  - id: SRC-03
+    name: reddit
+    label: "Reddit fashion/shopping communities"
+    focus: "Myntra, AJIO, Nykaa Fashion, online fashion shopping, wishlist behaviour, sizing,
+            outfit decisions, product comparison, shopping hesitation"
+    access: "Official Reddit API via PRAW (read-only, rate limited)"
+    status: proposed
+    notes: "Subreddit candidates: r/IndianFashion, r/fashionadvice, r/OnlineShoppingIndia,
+            r/myntra (if exists), plus site-wide search for brand + wishlist terms"
+
+  - id: SRC-04
+    name: youtube_comments
+    label: "YouTube comments (optional)"
+    focus: "Unboxing/review/fashion-haul comments containing purchase intent or hesitation"
+    access: "YouTube Data API (comments.list)"
+    status: optional
+    notes: "Only if primary sources are insufficient; verify terms of service"
+
+  - id: SRC-05
+    name: forums_blogs
+    label: "Fashion forums / public blogs / community threads (optional)"
+    focus: "Long-form decision-making narratives, product Q&A, styling advice threads"
+    access: "Manual/public export or supported API where permitted"
+    status: optional
+    notes: "Prioritize actual user language over editorial articles"
+
+# Sourcing rules (from architecture plan, section 5.3 Ethics & Compliance):
+# - Only publicly available data; respect platform ToS and rate limits.
+# - Never publish personal data beyond what is public; no PII enrichment.
+# - Attribute sources for traceability.
+# - If platform terms restrict scraping, switch to supported APIs or documented manual exports.

@@ -1,0 +1,92 @@
+# Behaviour Taxonomy Skeleton (Phase 1)
+# What is the user trying to DO when they save/interact with a fashion product?
+# Skeleton only — expand/extend labels in Phase 4 based on actual evidence.
+# Conventions: IDs stable, never reused. `type` is a judgement level:
+#   observed   = directly stated by the user
+#   inferred   = reasonably inferred from the user's language
+#   concluded  = hypothesis that needs corroboration across multiple packets
+
+behaviours:
+  - id: BEH-01
+    name: shortlist_products
+    label: "Shortlist products"
+    description: User saves one or more products to consider them for a later decision.
+    example: "saved 3 kurta sets to decide between them"
+    type: observed
+
+  - id: BEH-02
+    name: compare_products
+    label: "Compare products"
+    description: User evaluates two or more similar items against each other before deciding.
+    example: "kept comparing the same dress on two apps"
+    type: inferred
+
+  - id: BEH-03
+    name: wait_before_buying
+    label: "Wait before buying"
+    description: User postpones the purchase deliberately, often waiting for price drop or an occasion.
+    example: "added to wishlist to wait for the sale"
+    type: observed
+
+  - id: BEH-04
+    name: check_fit
+    label: "Check fit"
+    description: User investigates how an item will fit their body before committing.
+    example: "wasn't sure of the fit so kept the item saved"
+    type: observed
+
+  - id: BEH-05
+    name: check_quality
+    label: "Check quality / material"
+    description: User investigates fabric, finish, or build quality.
+    example: "wanted to know if the fabric matches the photo"
+    type: observed
+
+  - id: BEH-06
+    name: seek_social_validation
+    label: "Seek social validation"
+    description: User asks friends/community whether an item is a good choice.
+    example: "posted it asking whether I should buy it"
+    type: observed
+
+  - id: BEH-07
+    name: shop_for_occasion
+    label: "Find something for an occasion"
+    description: User is shopping with a specific event or use case in mind.
+    example: "saving options for my sister's wedding"
+    type: observed
+
+  - id: BEH-08
+    name: bookmark_for_later
+    label: "Bookmark / remember for later"
+    description: User saves an item purely as a memory/bookmark, no strong purchase intent.
+    example: "I just save pieces I like for inspo"
+    type: observed
+
+  - id: BEH-09
+    name: price_track
+    label: "Track price / wait for discount"
+    description: User watches an item for price movement before buying.
+    example: "wishlisted it and check the price every few days"
+    type: observed
+
+  - id: BEH-10
+    name: gift_shopping
+    label: "Gift shopping"
+    description: User is shopping for someone else, not themselves.
+    example: "looking for a birthday gift for my mom"
+    type: observed
+
+  - id: BEH-11
+    name: self_shopping
+    label: "Shopping for self"
+    description: User is shopping for themselves.
+    example: "I needed a formal shirt for office"
+    type: observed
+
+  - id: BEH-12
+    name: check_reviews
+    label: "Check reviews before buying"
+    description: User reads reviews/ratings to resolve uncertainty before purchase.
+    example: "waited until more reviews came in"
+    type: observed

@@ -22,10 +22,13 @@ class QuoraAdapter:
         raise SourceUnavailable("quora: use web_json fixtures for offline demo")
 
     def run(self, ctx: AdapterContext) -> Iterator[dict[str, Any]]:
+        from .base import harden_socket
+
         try:
             import requests
         except ImportError:
             raise SourceUnavailable("quora skipped: requests not installed")
+        harden_socket()
 
         queries = ctx.config.get("queries", ["shopping from myntra sizing", "wishlist vs buying clothes"])
         headers = {"User-Agent": "Mozilla/5.0 (compatible; DiscoveryEngine/0.1)"}

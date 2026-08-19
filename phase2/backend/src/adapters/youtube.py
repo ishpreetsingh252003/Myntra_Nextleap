@@ -49,6 +49,8 @@ class YouTubeAdapter:
             video_ids = self._search(requests, api_key, query, max_videos)
             for video_id in video_ids:
                 for comment in self._comments(requests, api_key, video_id, max_comments):
+                    if not ctx.in_window(comment.get("timestamp")):
+                        continue
                     yield comment
                     total += 1
         if total == 0:

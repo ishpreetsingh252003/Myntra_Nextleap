@@ -7,16 +7,24 @@ from pathlib import Path
 from typing import Any
 
 
-def render_report(db_path: Path, per_source: dict[str, dict[str, Any]], mode: str) -> str:
+def render_report(db_path: Path, per_source: dict[str, dict[str, Any]], mode: str, only_ids: set[str] | None = None) -> str:
     conn = sqlite3.connect(str(db_path))
     conn.row_factory = sqlite3.Row
+    if only_ids is None:
+        where, params = "WHERE 1=1", ()
+    else:
+        ids = list(only_ids)
+        if not ids:
+            ids = [""]
+        where = f"WHERE id IN ({','.join('?' * len(ids))})"
+        params = tuple(ids)
     rows = {r["source"]: r for r in conn.execute(
-        "SELECT source, COUNT(*) AS n, COUNT(DISTINCT author) AS users, "
-        "MIN(timestamp) AS min_ts, MAX(timestamp) AS max_ts, "
-        "SUM(CASE WHEN is_duplicate_of IS NULL THEN 0 ELSE 1 END) AS dupes, "
-        "SUM(CASE WHEN url <> '' THEN 1 ELSE 0 END) AS with_url "
-        "FROM conversations GROUP BY source")}
-    total = conn.execute("SELECT COUNT(*) AS n FROM conversations").fetchone()["n"]
+        f"SELECT source, COUNT(*) AS n, COUNT(DISTINCT author) AS users, "
+        f"MIN(timestamp) AS min_ts, MAX(timestamp) AS max_ts, "
+        f"SUM(CASE WHEN is_duplicate_of IS NULL THEN 0 ELSE 1 END) AS dupes, "
+        f"SUM(CASE WHEN url <> '' THEN 1 ELSE 0 END) AS with_url "
+        f"FROM conversations {where} GROUP BY source", params)}
+    total = conn.execute(f"SELECT COUNT(*) AS n FROM conversations {where}", params).fetchone()["n"]
     conn.close()
 
     lines = [
@@ -28,15 +36,16 @@ def render_report(db_path: Path, per_source: dict[str, dict[str, Any]], mode: st
         "",
         "## Per-source",
         "",
-        "| Source | Kept | Users | With URL | Duplicates (in run) | Invalid | Date range | Errors |",
-        "|--------|------|-------|----------|---------------------|---------|------------|--------|",
+        "| Source | Kept | Users | With URL | Duplicates (in run) | Invalid | Date-filtered | Date range | Errors |",
+        "|--------|------|-------|----------|---------------------|---------|---------------|------------|--------|",
     ]
     for source, row in sorted(rows.items()):
         stats = per_source.get(source, {})
         date_range = _range(row["min_ts"], row["max_ts"])
         lines.append(
             f"| {source} | {row['n']} | {row['users'] or 0} | {row['with_url']} | "
-            f"{stats.get('duplicates', 0)} | {stats.get('invalid', 0)} | {date_range} | "
+            f"{stats.get('duplicates', 0)} | {stats.get('invalid', 0)} | {stats.get('filtered', 0)} | "
+            f"{date_range} | "
             f"{'; '.join(stats.get('errors', [])) or '-'} |"
         )
     lines += ["", "## Source URL / traceability", ""]

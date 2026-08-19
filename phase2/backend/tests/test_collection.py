@@ -122,6 +122,19 @@ def test_report_lists_sources_and_url_coverage(orch, tmp_path):
     assert f"**Total kept conversations:** {EXPECTED_TOTAL}" in report
 
 
+def test_date_filter_keeps_records_in_range(orch):
+    stats = orch.collect_fixtures(from_date="2024-01-01", to_date="2026-12-31")
+    assert sum(s["kept"] for s in stats.values()) == EXPECTED_TOTAL
+    assert sum(s["filtered"] for s in stats.values()) == 0
+
+
+def test_date_filter_drops_out_of_range_records(orch):
+    stats = orch.collect_fixtures(from_date="2099-01-01")
+    assert sum(s["kept"] for s in stats.values()) == 0
+    # 39 kept + reddit/app_store in-run dupes (2) get filtered here because dedup runs after the date filter
+    assert sum(s["filtered"] for s in stats.values()) == EXPECTED_TOTAL + 2
+
+
 # ---- adapter availability ---------------------------------------------
 def test_live_adapters_raise_gracefully_without_credentials(tmp_path):
     from src.adapters import get_adapter

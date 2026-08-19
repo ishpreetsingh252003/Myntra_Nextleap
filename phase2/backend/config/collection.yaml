@@ -24,12 +24,16 @@ settings:
   backoff_seconds: 2
   sleep_between_apps_ms: 500
   reddit_sleep_seconds: 2
+  count: 200          # google_play reviews to fetch (bounded)
+  how_many: 50        # app_store reviews per app (bounded)
 
 # App ids — VERIFY before a live run (public ids may change).
 google_play_app_ids:
   - com.myntra.android
 app_store_app_ids:
   - 907676859
+app_store:
+  app_name: myntra
 
 reddit:
   subreddits:

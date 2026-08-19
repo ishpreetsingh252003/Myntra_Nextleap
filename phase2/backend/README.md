@@ -72,6 +72,30 @@ set YOUTUBE_API_KEY=...
 python -m src.cli collect --live --sources reddit google_play app_store youtube_comments quora
 ```
 
+## Date range (the "find reviews from X to Y" filter)
+
+Every run accepts `--from-date YYYY-MM-DD` and `--to-date YYYY-MM-DD`
+(both live and fixture mode). Records whose `timestamp` is outside the window are
+dropped and counted in the **Date-filtered** column; the report then reflects
+**only this run's results** (not the whole corpus), so the output is exactly what
+a review/source picker returns:
+
+```bash
+python -m src.cli collect --fixtures --from-date 2025-12-15 --to-date 2025-12-31
+python -m src.cli collect --live --sources google_play --from-date 2025-06-01 --to-date 2026-08-19
+```
+
+Live adapters also pre-filter client-side (`AdapterContext.in_window`) so Reddit,
+YouTube, Play/App Store never fetch more than the window needs; Play/App Store fetches
+are bounded (`count`/`how_many` in `config/collection.yaml`) so a run can't hang. A source
+that returns nothing (blocked/region-locked/empty) is reported as a `SourceUnavailable`
+skip in its row, never as a silent 0.
+
+A note for the final dashboard: the button that "finds reviews" calls exactly this
+collection function with the selected source + date range. `product_reviews`/`amazon`
+stay manual/exported (ToS), so in the dashboard they surface already-exported data
+and a "download export" hint instead of a live scrape.
+
 ## Decision notes
 
 - **Fixtures-first:** the pipeline runs end-to-end offline so an evaluator can always test it; live adapters are lazy-imported and raise `SourceUnavailable` (recorded in the run report) when creds/network are missing — this satisfies the "graceful failure" edge cases (EC-01…EC-03, EC-41).

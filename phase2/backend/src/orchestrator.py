@@ -1,6 +1,7 @@
 """Collection orchestrator: runs adapters, dedups, persists, records runs."""
 from __future__ import annotations
 
+from datetime import date
 from pathlib import Path
 from typing import Any, Iterator
 
@@ -33,8 +34,9 @@ class Orchestrator:
     def __init__(self, storage: Storage):
         self.storage = storage
         self.adapter_log: list[str] = []
+        self.last_run_ids: set[str] = set()
 
-    def collect_fixtures(self, sources: list[str] | None = None) -> dict[str, dict[str, Any]]:
+    def collect_fixtures(self, sources: list[str] | None = None, from_date: str | None = None, to_date: str | None = None) -> dict[str, dict[str, Any]]:
         sources = sources or list(FIXTURE_SOURCES)
         self.adapter_log.append("MODE: offline fixtures (deterministic sample data)")
         adapter_calls = []
@@ -43,6 +45,10 @@ class Orchestrator:
             config = dict(base_config)
             config["source_name"] = src
             config["use_fixtures"] = True
+            if from_date:
+                config["from_date"] = from_date
+            if to_date:
+                config["to_date"] = to_date
             adapter_calls.append((adapter_name, config))
         return self.collect(adapter_calls, run_label="fixtures")
 
@@ -52,11 +58,17 @@ class Orchestrator:
         per_source: dict[str, dict[str, Any]] = {}
         snapshots: dict[str, Path] = {}
         seen_hashes: dict[str, str] = {}
+        self._date_filters: dict[str, tuple[str | None, str | None]] = {}
+        self.last_run_ids = set()
+
+        for adapter_name, adapter_config in adapter_calls:
+            source_name = adapter_config.get("source_name", adapter_name)
+            self._date_filters.setdefault(source_name, (adapter_config.get("from_date"), adapter_config.get("to_date")))
 
         for adapter_name, adapter_config in adapter_calls:
             source_name = adapter_config.get("source_name", adapter_name)
             ctx = AdapterContext(config=adapter_config)
-            stats = {"collected": 0, "kept": 0, "duplicates": 0, "invalid": 0, "errors": []}
+            stats = {"collected": 0, "kept": 0, "duplicates": 0, "invalid": 0, "filtered": 0, "errors": []}
             per_source[source_name] = stats
             snapshots[source_name] = self.storage.snapshot_path(source_name)
 
@@ -87,13 +99,16 @@ class Orchestrator:
             yield from adapter.run(ctx)
 
     def _process_one(self, record, source_name, seen_hashes, stats) -> str:
-        """Classify a record as kept/duplicate/invalid. Returns the action."""
+        """Classify a record as kept/duplicate/invalid/filtered. Returns the action."""
         errors = validate_record(record)
         if errors:
             stats["invalid"] += 1
             stats["errors"].append("; ".join(errors))
             return "invalid"
         record["source"] = source_name
+        if not self._in_date_range(record["timestamp"], source_name):
+            stats["filtered"] += 1
+            return "filtered"
         record["id"] = stable_id(record["source"], record["source_external_id"])
 
         # cross-run duplicate by (source, external_id) -> already present
@@ -115,13 +130,34 @@ class Orchestrator:
             stats["duplicates"] += 1
             return "duplicate"
         stats["kept"] += 1
+        self.last_run_ids.add(record["id"])
         return "kept"
+
+    def _in_date_range(self, ts: str, source: str | None = None) -> bool:
+        """Apply from_date/to_date filter on a record timestamp (ISO date prefix)."""
+        frm, to = (None, None)
+        if source and source in self._date_filters:
+            frm, to = self._date_filters[source]
+        if frm is None and to is None:
+            return True
+        if not ts:
+            return True
+        try:
+            d = date.fromisoformat(ts[:10])
+        except ValueError:
+            return True
+        if frm and d < date.fromisoformat(frm[:10]):
+            return False
+        if to and d > date.fromisoformat(to[:10]):
+            return False
+        return True
 
     def _summary(self, per_source: dict[str, dict[str, Any]]) -> str:
         total_kept = sum(s["kept"] for s in per_source.values())
         total_dup = sum(s["duplicates"] for s in per_source.values())
         total_invalid = sum(s["invalid"] for s in per_source.values())
+        total_filtered = sum(s["filtered"] for s in per_source.values())
         return (
             f"kept={total_kept} duplicates={total_dup} invalid={total_invalid} "
-            f"sources={len(per_source)}"
+            f"filtered={total_filtered} sources={len(per_source)}"
         )

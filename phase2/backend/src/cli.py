@@ -30,6 +30,8 @@ def main(argv: list[str] | None = None) -> int:
     collect.add_argument("--fixtures", action="store_true", help="offline mode using bundled sample data")
     collect.add_argument("--live", action="store_true", help="live mode (requires credentials/network)")
     collect.add_argument("--sources", nargs="+", help="sources to collect (default: all enabled)")
+    collect.add_argument("--from-date", dest="from_date", default=None, help="ISO start date (YYYY-MM-DD); keeps records on/after (live + fixtures)")
+    collect.add_argument("--to-date", dest="to_date", default=None, help="ISO end date (YYYY-MM-DD); keeps records on/before")
     collect.add_argument("--out", type=Path, default=None, help="override output dir")
 
     sub.add_parser("report", help="render the latest collection report from the DB")
@@ -42,20 +44,31 @@ def main(argv: list[str] | None = None) -> int:
         storage = Storage(raw_dir, db_path)
         orch = Orchestrator(storage)
         if args.fixtures:
-            stats = orch.collect_fixtures(sources=args.sources)
+            stats = orch.collect_fixtures(sources=args.sources, from_date=args.from_date, to_date=args.to_date)
             mode = "offline fixtures"
         elif args.live:
-            if not args.sources:
-                print("error: --live requires --sources (google_play app_store reddit)", file=sys.stderr)
+            from .config import load_plan
+
+            plan = load_plan()
+            if args.sources:
+                calls = [c for c in plan.adapter_calls if c[0] in args.sources or c[1].get("source_name") in args.sources]
+            else:
+                calls = plan.adapter_calls
+            if not calls:
+                print("error: no configured sources match the requested --sources", file=sys.stderr)
                 return 2
-            calls = [("web_json" if s == "reddit_web" else s, {}) for s in args.sources]
+            for _, cfg in calls:
+                if args.from_date:
+                    cfg["from_date"] = args.from_date
+                if args.to_date:
+                    cfg["to_date"] = args.to_date
             stats = orch.collect(calls, run_label="live")
             mode = "live"
         else:
             print("error: choose --fixtures or --live", file=sys.stderr)
             return 2
 
-        report = render_report(db_path, stats, mode)
+        report = render_report(db_path, stats, mode, only_ids=orch.last_run_ids if args.command == "collect" else None)
         report_dir = (args.out / "reports") if args.out else REPORT_DIR
         report_dir.mkdir(parents=True, exist_ok=True)
         latest = report_dir / "latest.md"

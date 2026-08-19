@@ -193,7 +193,7 @@ Data Sources (App Store, Play Store, Reddit, forums, comments)
 | Dashboard | Streamlit, Gradio, or a static HTML report generator |
 | Testing | pytest + golden sets (labelled examples for classifier/extractor accuracy) |
 
-> **Note:** any stack that satisfies the assignment and can be run by the evaluator is acceptable. The plan below is stack-agnostic at the task level; concrete tools are named per layer.
+> **Note:** any stack that satisfies the assignment and can be run by the evaluator is acceptable. A concrete, Python-first stack is chosen below and carried through every phase; the dashboard is deployed last.
 
 ### 5.3 Component Responsibilities
 
@@ -214,6 +214,12 @@ Each phase is a **vertical slice** with: objective, tasks, inputs, outputs, deli
 ### Phase 1 — Discovery Foundation & Problem Framing
 
 **Goal:** Turn the business question into a testable research instrument, and define the evidence model *before* touching data.
+
+**Tech Stack:**
+- Python 3.11+; dependency management via `uv` or `requirements.txt`.
+- Repo layout: `phase1/`…`phase6/` code, `data/`, `config/`, `notebooks/`, `tests/`, `docs/`.
+- Testing harness: `pytest` + golden-set fixtures (JSON).
+- LLM access: Claude API key (or OpenAI/GPT) stored in `.env` via `python-dotenv`.
 
 **Tasks:**
 - [ ] Write the working principle and problem statement (this document's top).
@@ -242,6 +248,14 @@ Each phase is a **vertical slice** with: objective, tasks, inputs, outputs, deli
 
 **Goal:** Build the collection pipeline and produce a real, raw corpus of publicly available conversations.
 
+**Tech Stack:**
+- HTTP: `httpx`/`requests` with retry + rate-limit handling.
+- Reddit: `PRAW` (official API).
+- Google Play reviews: `google-play-scraper` (Python).
+- App Store reviews: `app-store-scraper` (Python).
+- YouTube comments (optional): `google-api-python-client`.
+- Storage: append-only JSONL per source + SQLite mirror (`sqlite3`/`SQLAlchemy`).
+
 **Tasks:**
 - [ ] Build **source adapters** for each selected source:
   - App Store reviews (iOS) — via public feeds/API.
@@ -267,6 +281,12 @@ Each phase is a **vertical slice** with: objective, tasks, inputs, outputs, deli
 
 **Goal:** Produce a high-quality **relevant corpus** — only conversations that actually talk about wishlist behaviour, purchase intention/hesitation, product comparison, fashion decision-making, uncertainty, or shopping behaviour.
 
+**Tech Stack:**
+- Data frames: `pandas`; text normalization with stdlib (`re`, `unicodedata`).
+- Near-dup detection: SimHash/min-hash or embeddings (`sentence-transformers`) + cosine threshold.
+- Relevance classifier: keyword rules + LLM classification via Claude/GPT API returning structured JSON (`pydantic` schema validation).
+- Language detection: `langdetect`.
+
 **Tasks:**
 - [ ] Implement cleaning transforms:
   - Normalize text (whitespace, unicode, emoji/URL removal options, language detection).
@@ -291,6 +311,12 @@ Each phase is a **vertical slice** with: objective, tasks, inputs, outputs, deli
 ### Phase 4 — Behaviour, Barrier & Unmet-Need Extraction
 
 **Goal:** Convert relevant conversations into structured, evidence-linked insight records — the heart of the Discovery Engine.
+
+**Tech Stack:**
+- LLM extraction: Claude/GPT API, one structured JSON payload per conversation, validated with `pydantic`; prompt templates kept in `config/prompts/`.
+- Batching: `asyncio` + concurrency with token-budget chunking and exponential-backoff retry.
+- Embeddings: OpenAI `text-embedding-3-small` (or `sentence-transformers`) for later clustering.
+- Vector store: ChromaDB or SQLite-vec; evidence packets in SQLite + JSONL.
 
 **Tasks:**
 - [ ] Build **Behaviour Extractor** (LLM + schema validation):
@@ -321,6 +347,11 @@ Each phase is a **vertical slice** with: objective, tasks, inputs, outputs, deli
 
 **Goal:** Discover patterns *across* conversations: which behaviours co-occur, which user segments exist, and how frequent each pattern is.
 
+**Tech Stack:**
+- Clustering: `scikit-learn` (KMeans) + `hdbscan` for density-based segments; embeddings from Phase 4 as features.
+- Quantification: `pandas` + `polars` aggregation, co-occurrence matrices, CSV export (spreadsheets/Sheets).
+- Visualizations (working docs): `matplotlib`/`plotly`; results saved as static PNG/HTML in `docs/`.
+
 **Tasks:**
 - [ ] **Segment Classification:** derive segments from data using behaviour + context features (embedding clustering + rule heuristics). Candidate segments to *test against* data (not assume): first-time shoppers, frequent shoppers, high-frequency wishlist users, occasion-based shoppers, shopping-for-self, shopping-for-others, budget-conscious, fashion-conscious, multi-product comparers, repeated sizing-concern users.
 - [ ] **Theme Clustering:** cluster evidence packets by behaviour+barrier vectors; extract cluster labels; ensure clusters map to opportunity themes.
@@ -346,6 +377,12 @@ Each phase is a **vertical slice** with: objective, tasks, inputs, outputs, deli
 ### Phase 6 — Opportunity Ranking, Evidence DB & Discovery Dashboard
 
 **Goal:** Turn analysed data into a **PM decision tool**: ranked opportunities, a browsable evidence database, and a testable end-to-end workflow.
+
+**Tech Stack:**
+- Dashboard: **Streamlit** (runnable, evaluator-testable) with an evidence-browser UI.
+- Evidence DB: SQLite (single portable file) + ChromaDB for semantic search over quotes.
+- Scorer/reports: pure Python + `pandas`; Discovery Report exported as Markdown/HTML.
+- Interview questions: LLM-generated from ranked opportunities, templated and stored per opportunity.
 
 **Tasks:**
 - [ ] Build **Opportunity Scorer**:

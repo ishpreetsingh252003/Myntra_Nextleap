@@ -1,0 +1,18 @@
+# Myntra NextLeap — AI-Powered Fashion Wishlist Discovery Engine
+
+> Don't build the solution I think is right. Build the discovery system that helps me find the problem worth solving.
+
+This repository contains the NextLeap Graduation Project: an AI-powered **Discovery Engine** that analyzes publicly available user conversations about online fashion shopping to uncover why users wishlist fashion products but fail to purchase them within 30 days.
+
+## Documents
+
+- **`NEXTLEAP_GRADUATION_PROJECT.md`** — problem statement, architecture plan, and the 6-phase roadmap.
+
+## Planned Phases
+
+1. Discovery Foundation & Problem Framing
+2. Data Collection Layer
+3. Cleaning & Relevance Filtering
+4. Behaviour, Barrier & Unmet-Need Extraction
+5. Segmentation, Theme Clustering & Quantification
+6. Opportunity Ranking, Evidence DB & Discovery Dashboard

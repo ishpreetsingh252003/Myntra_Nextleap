@@ -6,7 +6,9 @@ This repository contains the NextLeap Graduation Project: an AI-powered **Discov
 
 ## Documents
 
-- **`NEXTLEAP_GRADUATION_PROJECT.md`** — problem statement, architecture plan, and the 6-phase roadmap.
+- **`NEXTLEAP_GRADUATION_PROJECT.md`** — project index.
+- **`problemstatementbrief.md`** — problem statement, research question, hypotheses, evidence requirements.
+- **`ARCHITECTURE_6_PHASE_PLAN.md`** — architecture plan and the 6-phase roadmap.
 
 ## Planned Phases
 

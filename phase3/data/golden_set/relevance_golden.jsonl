@@ -1,0 +1,24 @@
+{"id":"G-01","text":"I keep adding kurtas to my Myntra wishlist but never end up buying them. I always save a couple and then forget.","gold_label":"relevant","gold_category":"wishlist_bookmark"}
+{"id":"G-02","text":"Been waiting for this dress to go on sale for a month. Still deciding if the price will drop further.","gold_label":"relevant","gold_category":"purchase_hesitation"}
+{"id":"G-03","text":"I keep comparing the same kurta on Myntra and AJIO. Can't decide which one to go for, the fit chart confuses me.","gold_label":"relevant","gold_category":"product_comparison"}
+{"id":"G-04","text":"Sizing is so unreliable. The M fits my other top but this one is tight. I add it to wishlist but I'm stuck.","gold_label":"relevant","gold_category":"fit_size_quality"}
+{"id":"G-05","text":"saving sarees for my sister's wedding, checking reviews to be sure the color matches","gold_label":"relevant","gold_category":"occasion_gift_shopping"}
+{"id":"G-06","text":"I never buy anything until I've read at least 5 reviews and seen customer photos.","gold_label":"relevant","gold_category":"review_checking"}
+{"id":"G-07","text":"Should I buy from Myntra or order it during the sale? I keep comparing with ajio for price.","gold_label":"relevant","gold_category":"purchase_intent"}
+{"id":"G-08","text":"Waiting to see if this kurta's price drops on sale day before buying.","gold_label":"relevant","gold_category":"purchase_hesitation"}
+{"id":"G-09","text":"Looking for a birthday gift for my mom, I have 3 options saved but can't pick.","gold_label":"relevant","gold_category":"occasion_gift_shopping"}
+{"id":"G-10","text":"Delivery was late and the exchange took forever. Might just return and buy from somewhere else.","gold_label":"relevant","gold_category":"shopping_experience"}
+{"id":"G-11","text":"mujhe size samajh nahi aaya, so I saved for later from the app","gold_label":"relevant","gold_category":"wishlist_bookmark"}
+{"id":"G-12","text":"Received the jeans, they don't fit, requesting a return and refund.","gold_label":"relevant","gold_category":"shopping_experience"}
+{"id":"G-13","text":"M vs L for this kurta, which to pick? The reviews say M is better for my height.","gold_label":"relevant","gold_category":"product_comparison"}
+{"id":"G-14","text":"I'm waiting to buy during the sale, it's in my wishlist since last month.","gold_label":"relevant","gold_category":"purchase_hesitation"}
+{"id":"G-15","text":"sale ka wait kar rahi hu, wishlist me daal diya hai","gold_label":"relevant","gold_category":"wishlist_bookmark"}
+{"id":"G-16","text":"I wish the dress was better quality.","gold_label":"not_relevant","gold_category":""}
+{"id":"G-17","text":"This is my favorite playlist for the gym, love the music list they made.","gold_label":"not_relevant","gold_category":""}
+{"id":"G-18","text":"Finally bought the sneakers, was in stock and I ordered immediately!","gold_label":"not_relevant","gold_category":""}
+{"id":"G-19","text":"Didn't even save it, just bought the dress on the spot, loved it.","gold_label":"not_relevant","gold_category":""}
+{"id":"G-20","text":"Great offer! Buy now limited period up to 70% off! Hurry click here cashback on your first order now now now!","gold_label":"not_relevant","gold_category":""}
+{"id":"G-21","text":"sdksdsk dkfldskf jsdfklsj klfdjsklf dsfklds fkdlsfj","gold_label":"not_relevant","gold_category":""}
+{"id":"G-22","text":"मैंने यह साड़ी पसंद की है और यह बहुत सुंदर है","gold_label":"not_relevant","gold_category":""}
+{"id":"G-23","text":"comparing shampoos, nykaa vs amazon, which one is better for my hair","gold_label":"not_relevant","gold_category":""}
+{"id":"G-24","text":"The photos looked very different from the reality, real material was dull.","gold_label":"relevant","gold_category":"review_checking"}

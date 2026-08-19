@@ -37,3 +37,8 @@ logs/
 phase2/data/db/*
 phase2/data/raw/*
 !phase2/data/fixtures/
+
+# Phase 3 pipeline outputs (regenerated; fixtures + golden set + reports stay tracked)
+phase3/data/output/*.jsonl
+phase3/data/output/*.sqlite3
+!phase3/data/output/*.md

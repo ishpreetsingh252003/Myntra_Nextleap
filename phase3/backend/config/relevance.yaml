@@ -1,0 +1,216 @@
+# Phase 3 config — cleaning thresholds + relevance classifier.
+# Aligned with phase1/config/taxonomies (behaviours BEH-*, barriers PB-*).
+
+classifier_version: "rules-v1.0"
+
+# ---- relevance categories (output labels, §6.2 of the architecture plan) ----
+categories:
+  - id: wishlist_bookmark
+    label: "Wishlist / save-for-later behaviour"
+    strong:
+      - "wishlist"
+      - "wish list"
+      - "wish listed"
+      - "saved for later"
+      - "save for later"
+      - "added to wishlist"
+      - "in my wishlist"
+      - "wishlist it"
+    signal:
+      - "saved it"
+      - "save it"
+      - "bookmark"
+      - "add to cart"
+      - "in my cart"
+      - "saved items"
+      - "for later"
+      - "keep it saved"
+      - "forgetting"
+
+  - id: purchase_intent
+    label: "Purchase intention"
+    signal:
+      - "i want to buy"
+      - "want to buy"
+      - "going to buy"
+      - "thinking of buying"
+      - "thinking to buy"
+      - "planning to buy"
+      - "plan to buy"
+      - "about to order"
+      - "about to buy"
+      - "ready to buy"
+      - "buy this"
+      - "order it"
+      - "ordering"
+      - "shall i buy"
+      - "should i buy"
+      - "should i order"
+
+  - id: purchase_hesitation
+    label: "Purchase hesitation / indecision"
+    signal:
+      - "waiting"
+      - "wait for"
+      - "hesitat"
+      - "confused"
+      - "can't decide"
+      - "cannot decide"
+      - "cant decide"
+      - "still deciding"
+      - "not sure whether"
+      - "not sure if"
+      - "dilemma"
+      - "undecided"
+      - "kept postponing"
+      - "keep postponing"
+      - "delaying"
+      - "price"
+      - "price drop"
+      - "goes on sale"
+
+  - id: product_comparison
+    label: "Product comparison"
+    signal:
+      - "compare"
+      - "comparing"
+      - "comparison"
+      - "vs"
+      - "versus"
+      - "between the"
+      - "which one"
+      - "which to pick"
+      - "better than"
+      - "other than this"
+      - "alternative"
+
+  - id: fit_size_quality
+    label: "Fit / size / quality concerns"
+    signal:
+      - "size"
+      - "sizing"
+      - "fit"
+      - "fits"
+      - "fitting"
+      - "fabric"
+      - "material"
+      - "quality"
+      - "stitching"
+      - "colour as shown"
+      - "color as shown"
+      - "after wash"
+      - "discolour"
+      - "petite"
+      - "tall"
+      - "waist"
+      - "hip"
+      - "bust"
+      - "measurement"
+      - "measurements"
+
+  - id: occasion_gift_shopping
+    label: "Occasion / gift shopping"
+    signal:
+      - "wedding"
+      - "party"
+      - "festival"
+      - "diwali"
+      - "holi"
+      - "engagement"
+      - "function"
+      - "birthday"
+      - "gift"
+      - "for my mom"
+      - "for my dad"
+      - "for my sister"
+      - "for my brother"
+      - "for my girlfriend"
+      - "for my boyfriend"
+      - "anniversary"
+      - "reception"
+      - "event"
+
+  - id: shopping_experience
+    label: "Shopping experience / app / delivery / returns"
+    signal:
+      - "delivery"
+      - "shipping"
+      - "return"
+      - "exchange"
+      - "refund"
+      - "cash on delivery"
+      - "cod"
+      - "app update"
+      - "app crashing"
+      - "payment"
+      - "coupon"
+      - "arrived"
+      - "washed out"
+      - "customer care"
+      - "myntra app"
+      - "ajio app"
+      - "nykaa"
+      - "order status"
+
+  - id: review_checking
+    label: "Reading / trusting reviews"
+    strong:
+      - "reviews"
+      - "rated"
+      - "photos"
+    signal:
+      - "rating"
+      - "stars"
+      - "read the reviews"
+      - "check the reviews"
+      - "check reviews"
+      - "trust"
+      - "photos"
+      - "customer photos"
+
+# ---- spam / bot / promotional noise ----  (EC-06, EC-13)
+spam:
+  promo_terms:
+    - "great offer"
+    - "best offer"
+    - "click here"
+    - "buy now"
+    - "limited period"
+    - "hurry"
+    - "sale is live"
+    - "earn money"
+    - "referral"
+    - "claim your"
+    - "free gift"
+    - "cashback on"
+    - "up to 70%"
+    - "up to 50%"
+    - "shop now"
+    - "download now"
+    - "watch this video"
+  pseudo_latin:  # random letter gibberish ('djjdksl zzmzzm') indicates bots
+    max_alpha_signal: 0.35
+  repeat:  # same phrase 3+ times in a short text
+    max_repeat_ratio: 0.4
+
+# ---- cleaning thresholds ----
+cleaning:
+  min_text_chars: 10          # EC-07: stars-only / hollow reviews
+  out_of_scope_latin_ratio: 0.35  # heavy non-Latin script -> quarantine, never delete (EC-04)
+  link_density_max: 6         # more links than this in text -> promo suspicion
+  pii_mask: true              # EC-14: mask emails / phones / order numbers
+
+# ---- rule classifier thresholds ----
+rules:
+  min_strong_hits: 1          # any strong term -> relevant
+  min_signal_hits: 2          # ordinary signals needed if no strong term
+  strong_weight: 3.0
+  signal_weight: 1.0
+
+# ---- optional LLM classifier ----
+llm:
+  provider: auto              # auto -> anthropic (claude) else openai else none
+  anthropic_model: "claude-3-5-sonnet-latest"
+  openai_model: "gpt-4o-mini"
+  temperature: 0           # EC-43 determinism
+  versioned: true          # EC-42 pin prompt + model in output

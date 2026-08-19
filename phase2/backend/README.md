@@ -114,6 +114,6 @@ and a "download export" hint instead of a live scrape.
 
 EC-01 empty results → graceful report; EC-02 rate limits → retry/backoff + resume by external_id; EC-05 dupes across sources → text-hash dedup; EC-06 spam noise → passes to Phase 3 quarantine; EC-08 long threads → chunk-size config if needed in Phase 3; EC-14 PII → no enrichment; EC-31 source-bias tracking → per-source reporting built in; EC-41 missing API key → `SourceUnavailable` per adapter in run report (YT/Reddit/Quora all covered).
 
-## Next phase (Phase 3)
+## Next phase (Phase 3) → [DONE](../README.md)
 
-Cleaning, exact/near-dedup with embeddings, relevance classifier (keyword pre-filter + LLM), and the `relevant_corpus` using this raw corpus as input.
+Cleaning, exact/near-dedup with embeddings, relevance classifier (keyword pre-filter + LLM), and the `relevant_corpus` — implemented in `../` (`phase3/backend`).

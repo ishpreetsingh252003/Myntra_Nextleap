@@ -1,0 +1,56 @@
+[
+  {
+    "id": "a1",
+    "app_id": "907676859",
+    "title": "Wishlist reminders please",
+    "content": "I add so many clothes to my wishlist but forget about them in a day. A reminder would actually make me buy something.",
+    "author": "themegha",
+    "rating": 3,
+    "date": "2025-11-12T10:00:00Z"
+  },
+  {
+    "id": "a2",
+    "app_id": "907676859",
+    "title": "Quality check saves",
+    "content": "I keep products saved to check reviews first because the fabric photos are usually misleading.",
+    "author": "reviewfirst",
+    "rating": 4,
+    "date": "2025-12-01T09:30:00Z"
+  },
+  {
+    "id": "a3",
+    "app_id": "907676859",
+    "title": "Wishlist reminders please",
+    "content": "I add so many clothes to my wishlist but forget about them in a day. A reminder would actually make me buy something.",
+    "author": "themegha",
+    "rating": 3,
+    "date": "2025-11-12T10:00:01Z"
+  },
+  {
+    "id": "a4",
+    "app_id": "907676859",
+    "title": "Never trust the size guide",
+    "content": "Saved a dress, bought the size it suggested, it fit like a sack. Now I only buy with exchange offers, otherwise I just keep saving.",
+    "author": "sizeissues",
+    "rating": 4,
+    "date": "2025-12-15T14:00:00Z"
+  },
+  {
+    "id": "a5",
+    "app_id": "907676859",
+    "title": "Overpriced for what it is",
+    "content": "Kept in wishlist to check if it drops during the sale. Not worth full price honestly.",
+    "author": "budgetwatch",
+    "rating": 3,
+    "date": "2026-01-02T18:20:00Z"
+  },
+  {
+    "id": "a6",
+    "app_id": "907676859",
+    "title": "sjdk...",
+    "content": "x",
+    "author": "brokencomment",
+    "rating": 1,
+    "date": "2026-01-05T08:00:00Z"
+  }
+]

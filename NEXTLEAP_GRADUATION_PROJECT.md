@@ -36,4 +36,4 @@ Then cross-cutting concerns (opportunity scoring, confidence tiers, ethics), dat
 
 ### 4. Code Structure — phase folders (`phase1/` … `phase6/`)
 
-Each phase builds in its own folder with its own `README.md`. **Phase 1 is implemented** — see [`phase1/README.md`](phase1/README.md): taxonomies, sources plan, evidence schema, validation script, golden-set seed, and passing tests.
+Each phase builds in its own folder with its own `README.md`. **Phase 1 is implemented** — see [`phase1/README.md`](phase1/README.md): taxonomies, sources plan, evidence schema, validation script, golden-set seed, and passing tests. **Phase 2 is implemented** — see [`phase2/backend/README.md`](phase2/backend/README.md): collection adapters, dedup, JSONL+SQLite raw corpus, run report, and offline fixture mode.

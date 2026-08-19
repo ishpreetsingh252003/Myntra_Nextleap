@@ -1,0 +1,12 @@
+# Phase 2 core (runs offline with fixtures)
+# python-dotenv (optional live config)
+python-dotenv==1.0.1
+PyYAML==6.0.1
+
+# Live collection adapters (optional; lazy-imported)
+google-play-scraper==1.2.7
+app-store-scraper==1.0.3
+praw==7.7.1
+
+# Testing
+pytest==8.3.3

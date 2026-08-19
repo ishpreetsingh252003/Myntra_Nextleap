@@ -1,0 +1,55 @@
+"""Live Google Play Store review collection via google-play-scraper."""
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from typing import Any, Iterator
+
+from ..raw import build_record
+from .base import AdapterContext, SourceUnavailable
+
+
+class GooglePlayAdapter:
+    name = "google_play"
+
+    def from_fixtures(self, ctx: AdapterContext) -> Iterator[dict[str, Any]]:
+        raise SourceUnavailable("google_play: use web_json fixtures for offline demo")
+
+    def run(self, ctx: AdapterContext) -> Iterator[dict[str, Any]]:
+        from .web_json import WebJsonAdapter
+
+        app_ids = ctx.config.get("app_ids", [])
+        if not app_ids:
+            raise SourceUnavailable("google_play skipped: no app_ids configured")
+        try:
+            from google_play_scraper import Sort, reviews_all
+        except ImportError:
+            raise SourceUnavailable("google_play skipped: google-play-scraper not installed")
+        for app_id in app_ids:
+            try:
+                items = reviews_all(app_id, sort=Sort.NEWEST, sleep_milliseconds=500)
+            except Exception as exc:  # live API may fail for various reasons
+                raise SourceUnavailable(f"google_play fetch failed for {app_id}: {exc}") from exc
+            for review in items:
+                yield build_record(
+                    source="google_play",
+                    source_external_id=f"{app_id}:{review.get('reviewId')}",
+                    url=f"https://play.google.com/store/apps/details?id={app_id}",
+                    text=review.get("content") or "",
+                    author=review.get("userName"),
+                    timestamp=_iso(review.get("at")),
+                    engagement={
+                        "rating": review.get("score"),
+                        "thumbs_up": review.get("thumbsUpCount"),
+                        "reply_content": review.get("replyContent"),
+                        "reply_date": _iso(review.get("repliedAt")),
+                    },
+                )
+        ctx.info(f"google_play: collected reviews for {len(app_ids)} app(s)")
+
+
+def _iso(dt) -> str | None:
+    if dt is None:
+        return None
+    if isinstance(dt, datetime):
+        return dt.astimezone(timezone.utc).isoformat()
+    return str(dt)

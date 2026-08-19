@@ -1,0 +1,42 @@
+# Phase 2 collection configuration.
+# Status of each source vs the targets from the architecture plan.
+
+targets:
+  google_play: 300
+  app_store: 300
+  reddit: 150
+  reddit_web: 100
+  forums_blogs: 50
+
+# Live sources enabled for collection. Reddit requires credentials (see .env).
+enabled_sources:
+  - google_play
+  - app_store
+  - reddit
+
+settings:
+  retries: 3
+  backoff_seconds: 2
+  sleep_between_apps_ms: 500
+  reddit_sleep_seconds: 2
+
+# App ids — VERIFY before a live run (public ids may change).
+google_play_app_ids:
+  - com.myntra.android
+app_store_app_ids:
+  - 907676859
+
+reddit:
+  subreddits:
+    - IndianFashion
+    - OnlineShoppingIndia
+    - fashionadvice
+  keywords:
+    - myntra
+    - wishlist
+    - "saved for later"
+    - sizing
+    - "can't decide"
+
+# Offline fixtures mode uses phase2/data/fixtures/* for a deterministic demo
+# and for the evaluator when live credentials/network are unavailable.

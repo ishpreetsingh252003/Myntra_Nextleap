@@ -1,0 +1,6 @@
+source,external_id,url,text,author,timestamp,likes,comments
+forums_blogs,f1,https://example.com/forum/thread/1,"I saved several occasion sarees but keep delaying the final pick because I am unsure about the blouse fit.",bystander,2025-10-20T12:00:00Z,3,1
+forums_blogs,f2,https://example.com/forum/thread/2,"Waiting for my friend's opinion before I buy the dress from my wishlist. Social validation matters.",askfriend,2025-11-05T17:00:00Z,8,4
+forums_blogs,f3,https://example.com/forum/thread/3,"Buy now refund later is the only reason I purchase; else even my wishlist purchases stall on return worries.",returnews,2025-12-12T09:15:00Z,11,2
+forums_blogs,f4,https://example.com/forum/thread/4,"Compare, compare, compare - I shortlist in Myntra but take the same item to other apps before committing.",comparer,2026-01-08T20:45:00Z,5,0
+forums_blogs,f5,https://example.com/forum/thread/5,"sa",noiseuser,2026-01-09T07:00:00Z,0,0

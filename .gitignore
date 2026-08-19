@@ -32,3 +32,8 @@ Thumbs.db
 # Logs
 *.log
 logs/
+
+# Phase 2 collection outputs (regenerated; fixtures stay tracked)
+phase2/data/db/*
+phase2/data/raw/*
+!phase2/data/fixtures/

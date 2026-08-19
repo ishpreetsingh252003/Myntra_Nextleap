@@ -26,4 +26,10 @@ Solution overview, high-level pipeline, tech stack, and the **6-phase build plan
 | 5 | Segmentation & Quantification | Theme clustering, segments, frequency tables |
 | 6 | Opportunity Ranking & Dashboard | Scorer, evidence DB, Streamlit dashboard, interview questions |
 
+### 3. Edge Cases — [`EDGE_CASES.md`](EDGE_CASES.md)
+
+Corner cases for every pipeline stage (collection → extraction → scoring → dashboard), plus LLM/reproducibility and research-framing edge cases, each with impact and handling strategy.
+
+---
+
 Plus cross-cutting concerns (opportunity scoring, confidence tiers, ethics), data model, testing strategy, risks, and success criteria.

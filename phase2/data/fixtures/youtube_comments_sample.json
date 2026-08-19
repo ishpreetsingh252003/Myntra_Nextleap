@@ -1,0 +1,42 @@
+[
+  {
+    "id": "yt1",
+    "video_id": "abc123",
+    "text_display": "I saved this saree in my wishlist last month but I'm still undecided because I can't tell if the fabric will be see-through.",
+    "author_display_name": "viewer_meet",
+    "published_at": "2025-12-01T12:00:00Z",
+    "like_count": 12
+  },
+  {
+    "id": "yt2",
+    "video_id": "abc123",
+    "text_display": "Bought the same kurta after hunting reviews here, the size recommendation saved me from a return.",
+    "author_display_name": "kurtaguru",
+    "published_at": "2025-12-02T08:30:00Z",
+    "like_count": 5
+  },
+  {
+    "id": "yt3",
+    "video_id": "abc123",
+    "text_display": "Wishlist vs cart - I always add to wishlist to wait for the discount. It's just wishful thinking lol.",
+    "author_display_name": "dealhunter",
+    "published_at": "2025-12-03T19:45:00Z",
+    "like_count": 8
+  },
+  {
+    "id": "yt4",
+    "video_id": "def456",
+    "text_display": "Nice video but I still can't decide between two options, is there an app that compares outfits??",
+    "author_display_name": "confused_shopper",
+    "published_at": "2026-01-05T21:00:00Z",
+    "like_count": 1
+  },
+  {
+    "id": "yt5",
+    "video_id": "def456",
+    "text_display": "The size chart on the app never matches actual fit. I always ask my sister before ordering.",
+    "author_display_name": "familyshopper",
+    "published_at": "2026-01-06T16:20:00Z",
+    "like_count": 3
+  }
+]

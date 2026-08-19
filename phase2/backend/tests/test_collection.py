@@ -11,7 +11,18 @@ from src.raw import build_record, normalize_text, record_hash, validate_record, 
 from src.storage import Storage
 from src.orchestrator import Orchestrator
 
-EXPECTED_KEPT = {"reddit_web": 7, "app_store": 5, "csv_import": 4}
+EXPECTED_KEPT = {
+    "reddit_web": 7,
+    "app_store": 5,
+    "google_play": 5,
+    "youtube_comments": 5,
+    "quora": 3,
+    "forums_blogs": 3,
+    "product_reviews": 4,
+    "amazon": 3,
+    "csv_import": 4,
+}
+EXPECTED_TOTAL = sum(EXPECTED_KEPT.values())
 
 
 @pytest.fixture()
@@ -48,12 +59,21 @@ def test_fixture_collection_end_to_end(orch):
     assert stats["csv_import"]["invalid"] == 1
 
 
+def test_all_sources_present_in_corpus(orch, tmp_path):
+    orch.collect_fixtures()
+    conn = sqlite3.connect(str(tmp_path / "db" / "corpus.sqlite3"))
+    conn.row_factory = sqlite3.Row
+    present = {r["source"] for r in conn.execute("SELECT DISTINCT source FROM conversations")}
+    assert present == set(EXPECTED_KEPT)
+    conn.close()
+
+
 def test_all_kept_records_have_required_fields_and_url(orch, tmp_path):
     orch.collect_fixtures()
     conn = sqlite3.connect(str(tmp_path / "db" / "corpus.sqlite3"))
     conn.row_factory = sqlite3.Row
     rows = conn.execute("SELECT * FROM conversations").fetchall()
-    assert len(rows) == sum(EXPECTED_KEPT.values())
+    assert len(rows) == EXPECTED_TOTAL
     for row in rows:
         assert row["id"] and row["source"] and row["source_external_id"]
         assert row["url"].startswith("http")
@@ -99,7 +119,7 @@ def test_report_lists_sources_and_url_coverage(orch, tmp_path):
     for source in EXPECTED_KEPT:
         assert source in report
     assert "100% of kept conversations carry a source URL." in report
-    assert "**Total kept conversations:** 16" in report
+    assert f"**Total kept conversations:** {EXPECTED_TOTAL}" in report
 
 
 # ---- adapter availability ---------------------------------------------
@@ -108,6 +128,6 @@ def test_live_adapters_raise_gracefully_without_credentials(tmp_path):
     from src.adapters.base import AdapterContext, SourceUnavailable
 
     orch = Orchestrator(Storage(tmp_path / "raw", tmp_path / "db" / "corpus.sqlite3"))
-    for name in ("reddit", "google_play", "app_store"):
+    for name in ("reddit", "google_play", "app_store", "youtube_comments", "quora"):
         with pytest.raises(SourceUnavailable):
             list(orch._records(name, AdapterContext(config={})))

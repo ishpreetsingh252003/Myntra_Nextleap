@@ -8,7 +8,7 @@ from typing import Any, Iterator
 from ..raw import build_record
 from .base import AdapterContext, SourceUnavailable
 
-SCHEMAS = {"reddit", "app_store", "custom"}
+SCHEMAS = {"reddit", "app_store", "google_play", "youtube", "custom"}
 _FIXTURE_DIR = Path(__file__).resolve().parents[3] / "data" / "fixtures"
 
 
@@ -22,12 +22,15 @@ class WebJsonAdapter:
     """Reads JSON exports (fixtures or downloaded) for any source.
 
     Fixture schemas:
-      reddit:    list of {id, title, selftext, author, permalink|url,
-                          subreddit, score, created_utc}
-      app_store: list of {id, title, content|body|text, author, rating,
-                          (iso) date|updated, app_id}
-      custom:    list of {source, external_id, url, text, author*, timestamp*,
-                          engagement*}
+      reddit:      list of {id, title, selftext, author, permalink|url,
+                            subreddit, score, created_utc}
+      app_store:   list of {id, title, content|body|text, author, rating,
+                            (iso) date|updated, app_id}
+      google_play: list of {review_id, content|text, userName, score, at, app_id}
+      youtube:     list of {id, text_display|text, author_display_name,
+                            published_at, like_count, video_id}
+      custom:      list of {source, external_id, url, text, author*, timestamp*,
+                            engagement*}
 
     Files read from ctx.config["files"] (a list of paths).
     """
@@ -124,6 +127,37 @@ def _read_app_store(item: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _read_google_play(item: dict[str, Any]) -> dict[str, Any]:
+    app_id = item.get("app_id", "unknown")
+    external_id = str(item.get("review_id") or item.get("id") or item.get("external_id"))
+    text = str(item.get("content") or item.get("text") or "").strip()
+    url = item.get("url") or f"https://play.google.com/store/apps/details?id={app_id}"
+    return {
+        "source": "google_play",
+        "external_id": f"{app_id}:{external_id}",
+        "url": url,
+        "text": text,
+        "author": item.get("userName") or item.get("author"),
+        "timestamp": item.get("at") or item.get("timestamp") or item.get("date"),
+        "engagement": {"rating": item.get("score"), "thumbs_up": item.get("thumbsUpCount")},
+    }
+
+
+def _read_youtube(item: dict[str, Any]) -> dict[str, Any]:
+    video_id = item.get("video_id", "unknown")
+    external_id = str(item.get("id") or item.get("comment_id") or item.get("external_id"))
+    url = item.get("url") or f"https://www.youtube.com/watch?v={video_id}"
+    return {
+        "source": "youtube_comments",
+        "external_id": f"{video_id}:{external_id}",
+        "url": url,
+        "text": str(item.get("text_display") or item.get("text") or "").strip(),
+        "author": item.get("author_display_name") or item.get("author"),
+        "timestamp": item.get("published_at") or item.get("timestamp") or item.get("date"),
+        "engagement": {"like_count": item.get("like_count")},
+    }
+
+
 def _custom(item: dict[str, Any]) -> dict[str, Any]:
     return {
         "source": str(item["source"]),
@@ -143,5 +177,7 @@ def _app_url(app_id: str, external_id: str) -> str:
 _SCHEMA_READERS = {
     "reddit": _read_reddit,
     "app_store": _read_app_store,
+    "google_play": _read_google_play,
+    "youtube": _read_youtube,
     "custom": _custom,
 }

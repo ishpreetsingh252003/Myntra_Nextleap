@@ -14,7 +14,10 @@ VALID_SOURCES = {
     "reddit",
     "reddit_web",
     "youtube_comments",
+    "quora",
     "forums_blogs",
+    "product_reviews",
+    "amazon",
     "csv_import",
 }
 

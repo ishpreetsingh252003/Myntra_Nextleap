@@ -1,0 +1,29 @@
+[
+  {
+    "source": "forums_blogs",
+    "external_id": "fb1",
+    "url": "https://example.org/fashion-thread/myntra-vs-nykaa",
+    "text": "I have 12 saved items across three apps and still couldn't pick one for my best friend's mehendi. Analysis paralysis is real.",
+    "author": "threader_x",
+    "timestamp": "2025-11-25T09:00:00Z",
+    "engagement": {"replies": 14}
+  },
+  {
+    "source": "forums_blogs",
+    "external_id": "fb2",
+    "url": "https://example.org/fashion-thread/occassion-dress-help",
+    "text": "Need help choosing between two lehengas from my wishlist for my engagement. One fits better but the other matches my theme.",
+    "author": "engaged_soon",
+    "timestamp": "2025-12-18T20:00:00Z",
+    "engagement": {"replies": 22}
+  },
+  {
+    "source": "forums_blogs",
+    "external_id": "fb3",
+    "url": "https://example.org/fashion-thread/bookmark-vs-buy",
+    "text": "I mostly use wishlist as a bookmark list for outfit inspiration, don't even intend to buy most of them.",
+    "author": "inspo_finder",
+    "timestamp": "2026-01-03T17:30:00Z",
+    "engagement": {"replies": 2}
+  }
+]

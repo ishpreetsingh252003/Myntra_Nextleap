@@ -13,6 +13,12 @@ from .storage import Storage
 FIXTURE_SOURCES = {
     "reddit_web": ("web_json", {"schema": "reddit", "fixture_pattern": "reddit_web_sample.json"}),
     "app_store": ("web_json", {"schema": "app_store", "fixture_pattern": "app_store_sample.json"}),
+    "google_play": ("web_json", {"schema": "google_play", "fixture_pattern": "google_play_sample.json"}),
+    "youtube_comments": ("web_json", {"schema": "youtube", "fixture_pattern": "youtube_comments_sample.json"}),
+    "quora": ("web_json", {"schema": "custom", "fixture_pattern": "quora_sample.json"}),
+    "forums_blogs": ("web_json", {"schema": "custom", "fixture_pattern": "forums_blogs_sample.json"}),
+    "product_reviews": ("web_json", {"schema": "custom", "fixture_pattern": "product_reviews_sample.json"}),
+    "amazon": ("web_json", {"schema": "custom", "fixture_pattern": "amazon_sample.json"}),
     "csv_import": ("csv_import", {}),
 }
 

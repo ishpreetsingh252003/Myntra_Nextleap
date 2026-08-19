@@ -1,0 +1,29 @@
+[
+  {
+    "source": "amazon",
+    "external_id": "am1",
+    "url": "https://www.amazon.in/dp/example-product-1",
+    "text": "Ordered two sizes just to be sure since the fit chart is unreliable. Ended up keeping one, returning the other.",
+    "author": "sizescout",
+    "timestamp": "2025-11-30T08:00:00Z",
+    "engagement": {"rating": 3, "helpful": 15}
+  },
+  {
+    "source": "amazon",
+    "external_id": "am2",
+    "url": "https://www.amazon.in/dp/example-product-2",
+    "text": "Kept in cart for a week, checked reviews daily, finally convinced. Wish deciding was this hard.",
+    "author": "dailychecker",
+    "timestamp": "2025-12-11T19:00:00Z",
+    "engagement": {"rating": 4, "helpful": 4}
+  },
+  {
+    "source": "amazon",
+    "external_id": "am3",
+    "url": "https://www.amazon.in/dp/example-product-3",
+    "text": "You can't trust the photos. First thing I do is read negatives and measure. Returns were painless at least.",
+    "author": "negativereader",
+    "timestamp": "2026-01-04T16:00:00Z",
+    "engagement": {"rating": 3, "helpful": 9}
+  }
+]

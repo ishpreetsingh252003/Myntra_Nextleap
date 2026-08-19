@@ -26,25 +26,50 @@ sources:
     focus: "Myntra, AJIO, Nykaa Fashion, online fashion shopping, wishlist behaviour, sizing,
             outfit decisions, product comparison, shopping hesitation"
     access: "Official Reddit API via PRAW (read-only, rate limited)"
-    status: proposed
+    status: implemented
     notes: "Subreddit candidates: r/IndianFashion, r/fashionadvice, r/OnlineShoppingIndia,
-            r/myntra (if exists), plus site-wide search for brand + wishlist terms"
+            r/myntra (if exists), plus site-wide search for brand + wishlist terms.
+            Live requires free Reddit app credentials; offline demo via fixtures."
 
   - id: SRC-04
     name: youtube_comments
-    label: "YouTube comments (optional)"
+    label: "YouTube comments"
     focus: "Unboxing/review/fashion-haul comments containing purchase intent or hesitation"
-    access: "YouTube Data API (comments.list)"
-    status: optional
-    notes: "Only if primary sources are insufficient; verify terms of service"
+    access: "YouTube Data API v3 (free key) via adapter"
+    status: implemented
+    notes: "Requires YOUTUBE_API_KEY for live; offline demo via fixtures."
 
   - id: SRC-05
+    name: quora
+    label: "Quora fashion shopping Q&A"
+    focus: "Decision narratives: should I buy from Myntra/AJIO, sizing questions, wishlist vs buying"
+    access: "Best-effort public search scrape (no public API); preferred path: manual export -> web_json"
+    status: implemented
+    notes: "Quora login wall/anti-bot may block; if blocked, export pages and use web_json custom."
+
+  - id: SRC-06
     name: forums_blogs
-    label: "Fashion forums / public blogs / community threads (optional)"
+    label: "Fashion forums / public blogs / community threads"
     focus: "Long-form decision-making narratives, product Q&A, styling advice threads"
-    access: "Manual/public export or supported API where permitted"
-    status: optional
-    notes: "Prioritize actual user language over editorial articles"
+    access: "Manual/public export or supported API; web_json custom schema"
+    status: implemented
+    notes: "Prioritize actual user language over editorial articles. Offline demo via fixtures."
+
+  - id: SRC-07
+    name: product_reviews
+    label: "On-platform product reviews + Q&A (Myntra / Nykaa Fashion / AJIO)"
+    focus: "Per-product fit, sizing, quality, colour and return complaints tied to wishlisted items"
+    access: "Export product review JSON/CSV -> web_json custom schema (endpoints unofficial; verify ToS)"
+    status: implemented
+    notes: "Supplement store-level reviews with product-level evidence. Offline demo via fixtures."
+
+  - id: SRC-08
+    name: amazon
+    label: "Amazon.in fashion product reviews"
+    focus: "Transferable fit/size/quality/review-friction behaviours (off-platform enrichment)"
+    access: "Export review pages -> web_json custom schema"
+    status: implemented
+    notes: "Off-target platform; use only to enrich barrier hypotheses, label explicitly."
 
 # Sourcing rules (from architecture plan, section 5.3 Ethics & Compliance):
 # - Only publicly available data; respect platform ToS and rate limits.

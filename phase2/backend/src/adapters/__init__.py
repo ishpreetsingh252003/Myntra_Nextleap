@@ -7,6 +7,8 @@ _LIVE_MODULES = {
     "reddit": ("reddit", "RedditAdapter"),
     "google_play": ("google_play", "GooglePlayAdapter"),
     "app_store": ("app_store", "AppStoreAdapter"),
+    "youtube_comments": ("youtube", "YouTubeAdapter"),
+    "quora": ("quora", "QuoraAdapter"),
 }
 
 _STATIC = {

@@ -1,0 +1,29 @@
+[
+  {
+    "source": "quora",
+    "external_id": "q1",
+    "url": "https://www.quora.com/Should-I-buy-clothes-from-Myntra-or-AJIO",
+    "text": "Should I buy clothes from Myntra or AJIO? I keep adding to wishlist but can't decide whose quality is better.",
+    "author": "q_asker",
+    "timestamp": "2025-12-10T10:00:00Z",
+    "engagement": {"answers": 6}
+  },
+  {
+    "source": "quora",
+    "external_id": "q2",
+    "url": "https://www.quora.com/How-do-I-know-my-Myntra-size",
+    "text": "How do I know my Myntra size? My wishlist items keep getting dropped because I am scared the fit will be off.",
+    "author": "q_asker2",
+    "timestamp": "2025-12-15T14:00:00Z",
+    "engagement": {"answers": 3}
+  },
+  {
+    "source": "quora",
+    "external_id": "q3",
+    "url": "https://www.quora.com/Is-it-safe-to-buy-returned-dresses-online",
+    "text": "Is it safe to buy dresses online? I save them but always back out at the last moment because returns are hassle.",
+    "author": "q_asker3",
+    "timestamp": "2026-01-01T11:00:00Z",
+    "engagement": {"answers": 9}
+  }
+]

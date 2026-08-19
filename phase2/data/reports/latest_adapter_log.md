@@ -3,4 +3,16 @@
 - web_json: {'collected': 8, 'kept': 7, 'duplicates': 1, 'invalid': 0, 'errors': []}
 - web_json: read 1 file(s)
 - web_json: {'collected': 6, 'kept': 5, 'duplicates': 1, 'invalid': 0, 'errors': []}
+- web_json: read 1 file(s)
+- web_json: {'collected': 5, 'kept': 5, 'duplicates': 0, 'invalid': 0, 'errors': []}
+- web_json: read 1 file(s)
+- web_json: {'collected': 5, 'kept': 5, 'duplicates': 0, 'invalid': 0, 'errors': []}
+- web_json: read 1 file(s)
+- web_json: {'collected': 3, 'kept': 3, 'duplicates': 0, 'invalid': 0, 'errors': []}
+- web_json: read 1 file(s)
+- web_json: {'collected': 3, 'kept': 3, 'duplicates': 0, 'invalid': 0, 'errors': []}
+- web_json: read 1 file(s)
+- web_json: {'collected': 4, 'kept': 4, 'duplicates': 0, 'invalid': 0, 'errors': []}
+- web_json: read 1 file(s)
+- web_json: {'collected': 3, 'kept': 3, 'duplicates': 0, 'invalid': 0, 'errors': []}
 - csv_import: {'collected': 5, 'kept': 4, 'duplicates': 0, 'invalid': 1, 'errors': ['text too short to be meaningful (<3 chars)']}

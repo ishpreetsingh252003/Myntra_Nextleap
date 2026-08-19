@@ -8,13 +8,31 @@ Build the collection pipeline and produce a **raw corpus** of publicly available
 
 ## Status: IMPLEMENTED
 
-- [x] Source adapters: Reddit (PRAW), Google Play (google-play-scraper), App Store (app-store-scraper), generic web JSON (forums/blogs/YouTube exports), CSV import fallback
+- [x] Source adapters: Reddit (PRAW), Google Play, App Store, YouTube (Data API v3), Quora (best-effort), web JSON (forums/blogs/product-reviews/Amazon exports), CSV import fallback
 - [x] Collection orchestration with rate-limit-aware handling + graceful skip when credentials/network unavailable
 - [x] Dedup at collection time (per-source external id + normalized text hash; cross-source and cross-run)
 - [x] Persistence: versioned JSONL per source + SQLite mirror
 - [x] Run report (markdown): per-source kept/users/URL coverage/duplicates/invalid/date range
-- [x] Offline fixture mode for deterministic demos + evaluator (no credentials required)
-- [x] Tests: 10 passing (schema, dedup, fixtures, cross-run, reporting, graceful adapter failure)
+- [x] Offline fixture mode for deterministic demos + evaluator (no credentials required); covers **9 sources**
+- [x] Tests: 11 passing (schema, dedup, all-sources coverage, fixtures, cross-run, reporting, graceful adapter failure)
+
+## Source coverage
+
+| Source | Live adapter | Credentials | Offline fixture |
+|--------|--------------|-------------|-----------------|
+| Google Play reviews | `google_play` | none (network) | `google_play_sample.json` |
+| Apple App Store reviews | `app_store` | none (network) | `app_store_sample.json` |
+| Reddit | `reddit` (PRAW) | free Reddit app | `reddit_web_sample.json` |
+| YouTube comments | `youtube_comments` | free API key | `youtube_comments_sample.json` |
+| Quora | `quora` (best-effort) | none | `quora_sample.json` |
+| Forums / blogs | export → `web_json` | — | `forums_blogs_sample.json` |
+| On-platform product reviews (Myntra/Nykaa/AJIO) | export → `web_json` | ToS-check | `product_reviews_sample.json` |
+| Amazon.in reviews | export → `web_json` | ToS-check | `amazon_sample.json` |
+| CSV upload fallback | `csv_import` | — | `csv_import_sample.csv` |
+
+`product_reviews`/`amazon` live content is fetched manually/exported (their public
+review endpoints are unofficial and ToS-restricted) and ingested via `web_json`
+`custom` schema. Fixture mode collects **all 9 sources** in one run.
 
 ## Layout
 
@@ -23,16 +41,16 @@ phase2/backend/
   src/
     raw.py              # record schema, hashing, validation (arch 6.1)
     storage.py          # SQLite mirror + JSONL snapshots + run bookkeeping
-    adapters/           # base + reddit / google_play / app_store / web_json / csv_import
+    adapters/           # base + reddit / google_play / app_store / youtube / quora / web_json / csv_import
     orchestrator.py     # dedup, persistence, per-source stats
     report.py           # markdown run report
     cli.py              # CLI entry point
-  config/collection.yaml  # targets, app ids, subreddits (VERIFY ids before live run)
+  config/collection.yaml  # targets, app ids, subreddits, YT queries (VERIFY ids before live run)
   requirements.txt
-  .env.example          # REDDIT_CLIENT_ID/SECRET, etc.
+  .env.example          # REDDIT_CLIENT_ID/SECRET, YOUTUBE_API_KEY, etc.
   tests/test_collection.py
 phase2/data/
-  fixtures/             # sample exports (tracked): reddit_web / app_store / csv
+  fixtures/             # sample exports (tracked): 8 JSON/CSV files for 9 sources
   raw/                  # JSONL snapshots (gitignored)
   db/                   # corpus.sqlite3 (gitignored)
   reports/latest.md     # latest run report
@@ -46,11 +64,12 @@ python -m pip install -r requirements.txt
 
 # offline demo (deterministic, no credentials):
 python -m src.cli collect --fixtures
-python -m src.cli collect --fixtures --sources reddit_web csv_import
+python -m src.cli collect --fixtures --sources reddit_web google_play youtube_comments
 
 # live collection (needs credentials / network / verified app ids):
 set REDDIT_CLIENT_ID=...     # or copy .env.example -> .env
-python -m src.cli collect --live --sources reddit google_play app_store
+set YOUTUBE_API_KEY=...
+python -m src.cli collect --live --sources reddit google_play app_store youtube_comments quora
 ```
 
 ## Decision notes
@@ -63,13 +82,13 @@ python -m src.cli collect --live --sources reddit google_play app_store
 
 ## Exit criteria (from architecture plan)
 
-- [x] ≥ N conversations collected across ≥ 2 primary sources → 16 kept across 3 sources in fixture mode (reddit_web, app_store, csv/forums)
+- [x] ≥ N conversations collected across ≥ 2 primary sources → 39 kept across **9 sources** in fixture mode
 - [x] No broken records → 100% URL coverage, invalid records rejected + reported
 - [x] All traceable to a source URL → `with_url == kept` and reported per source
 
 ## Edge cases handled here
 
-EC-01 empty results → graceful report; EC-02 rate limits → retry/backoff + resume by external_id; EC-05 dupes across sources → text-hash dedup; EC-06 spam noise → passes to Phase 3 quarantine; EC-08 long threads → chunk-size config if needed in Phase 3; EC-14 PII → no enrichment; EC-41 missing API key → `SourceUnavailable` in run report.
+EC-01 empty results → graceful report; EC-02 rate limits → retry/backoff + resume by external_id; EC-05 dupes across sources → text-hash dedup; EC-06 spam noise → passes to Phase 3 quarantine; EC-08 long threads → chunk-size config if needed in Phase 3; EC-14 PII → no enrichment; EC-31 source-bias tracking → per-source reporting built in; EC-41 missing API key → `SourceUnavailable` per adapter in run report (YT/Reddit/Quora all covered).
 
 ## Next phase (Phase 3)
 

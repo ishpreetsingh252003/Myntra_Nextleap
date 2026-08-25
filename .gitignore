@@ -54,3 +54,8 @@ phase5/data/output/*.csv
 phase5/data/output/*.json
 phase5/data/output/*.sqlite3
 !phase5/data/output/*.md
+
+# Phase 6 pipeline outputs (regenerated; reports stay tracked)
+phase6/data/output/*.sqlite3
+phase6/data/output/*.db
+!phase6/data/output/*.md

@@ -1,0 +1,26 @@
+# Phase 6 config — Opportunity Scoring, Evidence DB & Dashboard API.
+extractor_version: "opportunity-v1.0"
+
+# ---- opportunity scoring weights (architecture §5.1) ----
+scoring:
+  weights:
+    frequency: 0.20
+    severity: 0.15
+    purchase_impact: 0.20
+    users_affected: 0.10
+    evidence_strength: 0.15
+    segment_concentration: 0.05
+    existing_workaround: 0.10
+    product_leverage: 0.05
+
+# ---- interview question generation ----
+interview:
+  questions_per_opportunity: 3
+  style: open_ended
+
+# ---- report settings ----
+report:
+  format: markdown
+  include_evidence: true
+  include_quotes: true
+  max_quotes_per_opportunity: 5

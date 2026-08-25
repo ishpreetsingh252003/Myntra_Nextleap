@@ -1,7 +1,7 @@
 # Phase 3 Filtering Funnel Report
 
-- **Generated:** 2026-08-20T02:35:44
-- **Run:** p3_20260819-210544
+- **Generated:** 2026-08-26T02:14:34
+- **Run:** p3_20260825-204434
 - **Classifier:** rules-v1.0 (rules only, offline)
 
 **Totals:** collected=30 -> cleaned=24 -> dedup-kept=22 -> relevant=18

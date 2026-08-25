@@ -1,6 +1,6 @@
 # Phase 3 Relevance Classifier Accuracy
 
-- **Generated:** 2026-08-20T02:35:51
+- **Generated:** 2026-08-26T02:14:41
 - **Golden set size:** 24
 - **Agreement (exact label match):** 0.958 (23/24)
 - **Classifier version:** rules-v1.0

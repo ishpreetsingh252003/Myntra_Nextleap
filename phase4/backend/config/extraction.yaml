@@ -1,0 +1,170 @@
+# Phase 4 config — Behaviour/Barrier/Unmet-Need extraction settings.
+# Taxonomy IDs aligned with phase1/config/taxonomies/behaviours.yaml, barriers.yaml, segments.yaml.
+
+extractor_version: "extraction-v1.0"
+
+# ---- behaviour taxonomy ----
+behaviours:
+  - id: BEH-01
+    name: shortlist_products
+    keywords: ["saved", "save", "wishlist", "shortlist", "bookmark", "kept it saved", "save for later"]
+  - id: BEH-02
+    name: compare_products
+    keywords: ["compar", "vs", "versus", "which one", "which to pick", "between the", "better than"]
+  - id: BEH-03
+    name: wait_before_buying
+    keywords: ["wait", "waiting", "wait for", "postpone", "delay", "later", "not yet"]
+  - id: BEH-04
+    name: check_fit
+    keywords: ["fit", "fits", "fitting", "sizing", "size chart", "measurement", "waist", "hip", "bust"]
+  - id: BEH-05
+    name: check_quality
+    keywords: ["quality", "fabric", "material", "stitch", "colour", "color", "after wash", "finish"]
+  - id: BEH-06
+    name: seek_social_validation
+    keywords: ["should i buy", "what do you think", "opinion", "advise", "suggest", "review"]
+  - id: BEH-07
+    name: shop_for_occasion
+    keywords: ["wedding", "party", "festival", "diwali", "function", "birthday", "event", "trip"]
+  - id: BEH-08
+    name: bookmark_for_later
+    keywords: ["bookmark", "inspo", "inspiration", "reference", "just saving"]
+  - id: BEH-09
+    name: price_track
+    keywords: ["price", "discount", "sale", "coupon", "price drop", "cheaper"]
+  - id: BEH-10
+    name: gift_shopping
+    keywords: ["gift", "present", "for mom", "for dad", "for sister", "for brother", "for friend", "for girlfriend", "for boyfriend", "birthday gift"]
+  - id: BEH-11
+    name: self_shopping
+    keywords: ["i need", "for myself", "for me", "i wanted", "myself"]
+  - id: BEH-12
+    name: check_reviews
+    keywords: ["review", "rated", "rating", "stars", "customer photo", "read the"]
+
+# ---- barrier taxonomy ----
+barriers:
+  - id: PB-01
+    name: fit_uncertainty
+    keywords: ["fit", "fits", "fitting", "tight", "loose", "body type", "shape"]
+  - id: PB-02
+    name: size_uncertainty
+    keywords: ["size", "sizing", "which size", "s size", "m size", "xl", "xxl", "runs small", "runs big"]
+  - id: PB-03
+    name: quality_uncertainty
+    keywords: ["quality", "fabric", "material", "stitch", "flimsy", "thin", "cheap feel"]
+  - id: PB-04
+    name: reality_uncertainty
+    keywords: ["photo", "picture", "image", "reality", "look different", "different from", "doesn't match"]
+  - id: PB-05
+    name: styling_uncertainty
+    keywords: ["style", "styling", "pair", "match", "wear with", "outfit", "look"]
+  - id: PB-06
+    name: occasion_uncertainty
+    keywords: ["occasion", "appropriate", "too formal", "too casual", "too flashy"]
+  - id: PB-07
+    name: review_doubt
+    keywords: ["review", "no review", "few review", "mixed review", "bad review", "rating"]
+  - id: PB-08
+    name: authenticity_concern
+    keywords: ["fake", "original", "branded", "authentic", "real", "duplicate"]
+  - id: PB-09
+    name: price_uncertainty
+    keywords: ["price", "expensive", "overpriced", "pricey", "wait for sale", "discount"]
+  - id: PB-10
+    name: spend_hesitation
+    keywords: ["spend", "budget", "afford", "money", "costly", "can't spend"]
+  - id: PB-11
+    name: comparison_bloat
+    keywords: ["compar", "vs", "alternative", "other option", "another one"]
+  - id: PB-12
+    name: social_validation_missing
+    keywords: ["opinion", "what do you think", "ask", "show", "second opinion"]
+  - id: PB-13
+    name: availability_issue
+    keywords: ["out of stock", "unavailable", "sold out", "not available"]
+  - id: PB-14
+    name: delivery_concern
+    keywords: ["delivery", "shipping", "late", "slow", "courier", "arrived late"]
+  - id: PB-15
+    name: return_concern
+    keywords: ["return", "exchange", "refund", "policy", "hard to return"]
+  - id: PB-16
+    name: low_urgency
+    keywords: ["no rush", "not urgent", "someday", "whenever", "no hurry"]
+  - id: PB-17
+    name: forgetting
+    keywords: ["forgot", "forget", "remember", "lost", "never revisit"]
+  - id: PB-18
+    name: pure_bookmarking
+    keywords: ["just saving", "no plan", "for reference", "just bookmark"]
+
+# ---- segment hints (candidate) ----
+segments:
+  - id: SEG-01
+    name: first_time_shopper
+    keywords: ["first time", "first order", "new to", "never used"]
+  - id: SEG-02
+    name: frequent_shopper
+    keywords: ["order often", "frequent", "regular", "always buy", "expert"]
+  - id: SEG-03
+    name: high_wishlist_user
+    keywords: ["many saved", "big wishlist", "lots of saved", "hundred"]
+  - id: SEG-04
+    name: occasion_shopper
+    keywords: ["wedding", "party", "festival", "diwali", "function", "birthday", "trip"]
+  - id: SEG-05
+    name: shopping_for_self
+    keywords: ["for myself", "i need", "for me", "i wanted"]
+  - id: SEG-06
+    name: shopping_for_others
+    keywords: ["gift", "for mom", "for sister", "for friend", "for dad", "for brother"]
+  - id: SEG-07
+    name: budget_conscious
+    keywords: ["budget", "cheap", "afford", "sale", "discount", "price drop"]
+  - id: SEG-08
+    name: fashion_conscious
+    keywords: ["trend", "style", "brand", "aesthetic", "matching", "outfit"]
+  - id: SEG-09
+    name: multi_product_comparer
+    keywords: ["compar", "vs", "which one", "between", "alternative"]
+  - id: SEG-10
+    name: repeated_sizing_concern
+    keywords: ["size", "sizing", "fit", "tight", "loose", "runs small"]
+
+# ---- funnel stage signals ----
+funnel:
+  saved:
+    keywords: ["saved", "wishlist", "bookmark", "added to", "keep it"]
+  evaluating:
+    keywords: ["comparing", "deciding", "checking", "research", "looking at", "evaluating"]
+  hesitating:
+    keywords: ["waiting", "hesitat", "not sure", "confused", "can't decide", "dilemma"]
+  abandoned:
+    keywords: ["forgot", "never bought", "gave up", "won't buy", "removed", "delete"]
+  purchased:
+    keywords: ["bought", "ordered", "purchased", "got it", "delivered"]
+
+# ---- unmet-need keyword patterns ----
+unmet_needs:
+  fit_guidance: ["size chart", "measurement", "body type", "fit guide", "try on"]
+  quality_trust: ["material", "fabric", "real photo", "customer photo", "honest review"]
+  price_transparency: ["actual price", "real price", "final price", "hidden charge"]
+  social_proof: ["opinion", "should i", "what do you think", "second opinion"]
+  review_reliability: ["trust", "fake review", "genuine", "verified"]
+  styling_help: ["how to wear", "pair with", "style with", "outfit idea"]
+  comparison_tool: ["compare", "side by side", "difference"]
+
+# ---- LLM settings ----
+llm:
+  provider: auto
+  anthropic_model: "claude-3-5-sonnet-latest"
+  openai_model: "gpt-4o-mini"
+  temperature: 0
+  versioned: true
+
+# ---- embedding settings ----
+embeddings:
+  method: tfidf         # tfidf | chromadb | openai
+  max_features: 500
+  ngram_range: [1, 2]

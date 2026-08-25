@@ -1,6 +1,6 @@
 # Phase 4 Extraction Accuracy Report
 
-- **Generated:** 2026-08-26T02:32:28
+- **Generated:** 2026-08-26T02:41:21
 - **Golden set size:** 20
 - **Extractor version:** extraction-v1.0
 - **Decision source:** rules (offline baseline)

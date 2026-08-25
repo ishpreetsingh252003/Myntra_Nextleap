@@ -47,3 +47,10 @@ phase3/data/output/*.sqlite3
 phase4/data/output/*.jsonl
 phase4/data/output/*.sqlite3
 !phase4/data/output/*.md
+
+# Phase 5 pipeline outputs (regenerated; reports stay tracked)
+phase5/data/output/*.jsonl
+phase5/data/output/*.csv
+phase5/data/output/*.json
+phase5/data/output/*.sqlite3
+!phase5/data/output/*.md

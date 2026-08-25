@@ -1,0 +1,49 @@
+# Phase 5 config — Segmentation, Clustering & Quantification settings.
+extractor_version: "segmentation-v1.0"
+
+# ---- segment assignment rules (from Phase 1 segments.yaml) ----
+segments:
+  - id: SEG-01
+    name: first_time_shopper
+    signals: ["first time", "first order", "new to", "never used", "first purchase"]
+  - id: SEG-02
+    name: frequent_shopper
+    signals: ["order often", "frequent", "regular", "always buy", "expert", "many orders"]
+  - id: SEG-03
+    name: high_wishlist_user
+    signals: ["many saved", "big wishlist", "lots of saved", "hundred", "always save", "keep adding"]
+  - id: SEG-04
+    name: occasion_shopper
+    signals: ["wedding", "party", "festival", "diwali", "function", "birthday", "trip", "engagement"]
+  - id: SEG-05
+    name: shopping_for_self
+    signals: ["for myself", "i need", "for me", "i wanted", "myself"]
+  - id: SEG-06
+    name: shopping_for_others
+    signals: ["gift", "for mom", "for sister", "for friend", "for dad", "for brother", "present"]
+  - id: SEG-07
+    name: budget_conscious
+    signals: ["budget", "cheap", "afford", "sale", "discount", "price drop", "coupon"]
+  - id: SEG-08
+    name: fashion_conscious
+    signals: ["trend", "style", "brand", "aesthetic", "matching", "outfit", "fashion"]
+  - id: SEG-09
+    name: multi_product_comparer
+    signals: ["compar", "vs", "which one", "between", "alternative", "other option"]
+  - id: SEG-10
+    name: repeated_sizing_concern
+    signals: ["size", "sizing", "fit", "tight", "loose", "runs small", "runs big"]
+
+# ---- clustering settings ----
+clustering:
+  method: kmeans           # kmeans | hdbscan | agglomerative
+  n_clusters: 5            # for kmeans
+  min_cluster_size: 3      # for hdbscan
+  embedding_method: tfidf  # matches Phase 4 embedding config
+  label_method: keyword    # keyword | llm
+
+# ---- quantification ----
+quantification:
+  min_segment_size: 3
+  min_theme_size: 3
+  output_format: csv

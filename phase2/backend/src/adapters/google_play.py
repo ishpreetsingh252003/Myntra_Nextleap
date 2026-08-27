@@ -25,35 +25,57 @@ class GooglePlayAdapter:
         except ImportError:
             raise SourceUnavailable("google_play skipped: google-play-scraper not installed")
         harden_socket()
-        budget = ctx.count_budget(default=200)
+        max_pages = int(ctx.config.get("max_pages", 1000))
+        page_size = int(ctx.config.get("page_size", 100))
+        collected = 0
         for app_id in app_ids:
-            try:
-                items, _continuation = reviews(
-                    app_id, sort=Sort.NEWEST, count=budget
-                )
-            except Exception as exc:  # live API may fail for various reasons
-                raise SourceUnavailable(f"google_play fetch failed for {app_id}: {exc}") from exc
-            if not items:
-                raise SourceUnavailable(f"google_play: 0 reviews returned for {app_id}")
-            for review in items:
-                ts = _iso(review.get("at"))
-                if not ctx.in_window(ts):
-                    continue
-                yield build_record(
-                    source="google_play",
-                    source_external_id=f"{app_id}:{review.get('reviewId')}",
-                    url=f"https://play.google.com/store/apps/details?id={app_id}",
-                    text=review.get("content") or "",
-                    author=review.get("userName"),
-                    timestamp=ts,
-                    engagement={
-                        "rating": review.get("score"),
-                        "thumbs_up": review.get("thumbsUpCount"),
-                        "reply_content": review.get("replyContent"),
-                        "reply_date": _iso(review.get("repliedAt")),
-                    },
-                )
-        ctx.info(f"google_play: collected reviews for {len(app_ids)} app(s)")
+            token = None
+            pages = 0
+            reached_window = False  # reviews are NEWEST-first; stop once older than window
+            while pages < max_pages:
+                try:
+                    items, token = reviews(
+                        app_id, sort=Sort.NEWEST, count=page_size,
+                        continuation_token=token,
+                    )
+                except Exception as exc:  # live API may fail
+                    if collected == 0:
+                        raise SourceUnavailable(f"google_play fetch failed for {app_id}: {exc}") from exc
+                    break
+                if not items:
+                    break
+                for review in items:
+                    ts = _iso(review.get("at"))
+                    if ts is None:
+                        # no date -> keep (can't filter) but only if nothing older yet
+                        if reached_window:
+                            continue
+                    elif not ctx.in_window(ts):
+                        reached_window = True
+                        continue
+                    collected += 1
+                    yield build_record(
+                        source="google_play",
+                        source_external_id=f"{app_id}:{review.get('reviewId')}",
+                        url=f"https://play.google.com/store/apps/details?id={app_id}",
+                        text=review.get("content") or "",
+                        author=review.get("userName"),
+                        timestamp=ts,
+                        engagement={
+                            "rating": review.get("score"),
+                            "thumbs_up": review.get("thumbsUpCount"),
+                            "reply_content": review.get("replyContent"),
+                            "reply_date": _iso(review.get("repliedAt")),
+                        },
+                    )
+                pages += 1
+                if token is None:
+                    break
+                if reached_window:
+                    break  # we've gone past the window for this app
+        if collected == 0:
+            raise SourceUnavailable(f"google_play: no reviews in the selected window for {app_ids}")
+        ctx.info(f"google_play: collected {collected} reviews in window for {len(app_ids)} app(s)")
 
 
 def _iso(dt) -> str | None:

@@ -31,7 +31,9 @@ class AppStoreAdapter:
                 app_id=app_id,
             )
             try:
-                app.review(how_many=int(ctx.config.get("how_many", 50)))
+                # fetch all available reviews (library paginates internally);
+                # how_many is an upper bound, default is effectively unlimited
+                app.review(how_many=int(ctx.config.get("how_many", 100000)))
             except Exception as exc:  # live API may fail
                 raise SourceUnavailable(f"app_store fetch failed for {app_id}: {exc}") from exc
             if not app.reviews:

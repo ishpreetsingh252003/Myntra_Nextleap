@@ -158,8 +158,10 @@ unmet_needs:
 # ---- LLM settings ----
 llm:
   provider: auto
+  groq_model: "llama-3.1-8b-instant"
   anthropic_model: "claude-3-5-sonnet-latest"
   openai_model: "gpt-4o-mini"
+  gemini_model: "gemini-2.0-flash"
   temperature: 0
   versioned: true
 

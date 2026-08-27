@@ -24,8 +24,12 @@ settings:
   backoff_seconds: 2
   sleep_between_apps_ms: 500
   reddit_sleep_seconds: 2
-  count: 200          # google_play reviews to fetch (bounded)
-  how_many: 50        # app_store reviews per app (bounded)
+  count: 100000        # google_play: fetch ALL reviews (paged) in the window
+  how_many: 100000      # app_store: fetch ALL reviews
+  max_pages: 2000       # hard safety cap on Play pagination (raise if needed)
+  reddit_limit: 1000    # Reddit search cap (API max ~1000 per query)
+  youtube_max_videos: 5
+  youtube_max_comments: 100
 
 # App ids — VERIFY before a live run (public ids may change).
 google_play_app_ids:

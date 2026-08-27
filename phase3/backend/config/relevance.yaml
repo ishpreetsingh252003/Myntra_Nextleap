@@ -209,8 +209,10 @@ rules:
 
 # ---- optional LLM classifier ----
 llm:
-  provider: auto              # auto -> anthropic (claude) else openai else none
+  provider: auto              # auto -> groq (free) else gemini (free) else openai/anthropic
+  groq_model: "llama-3.1-8b-instant"
   anthropic_model: "claude-3-5-sonnet-latest"
   openai_model: "gpt-4o-mini"
+  gemini_model: "gemini-2.0-flash"
   temperature: 0           # EC-43 determinism
   versioned: true          # EC-42 pin prompt + model in output

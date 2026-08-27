@@ -54,31 +54,32 @@ class LLMExtractor:
     def _choose_provider(self, c: dict[str, Any]) -> None:
         self.provider = None
         self.model = None
-        self.client = None
         mode = c.get("provider", "auto")
         if mode == "none":
             return
-        if mode in ("auto", "anthropic") and os.environ.get("ANTHROPIC_API_KEY"):
-            try:
-                import anthropic  # noqa: F401
-                self.provider = "anthropic"
-                self.model = c.get("anthropic_model", "claude-3-5-sonnet-latest")
-                self.client = "anthropic"
-                return
-            except ImportError:
-                pass
+        # Groq (free, fast) — highest priority
+        if mode in ("auto", "groq") and os.environ.get("GROQ_API_KEY"):
+            self.provider = "groq"
+            self.model = c.get("groq_model", "llama-3.1-8b-instant")
+            return
+        # Gemini (free tier)
+        if mode in ("auto", "gemini") and os.environ.get("GOOGLE_API_KEY"):
+            self.provider = "gemini"
+            self.model = c.get("gemini_model", "gemini-2.0-flash")
+            return
+        # OpenAI (paid fallback)
         if mode in ("auto", "openai") and os.environ.get("OPENAI_API_KEY"):
-            try:
-                import openai  # noqa: F401
-                self.provider = "openai"
-                self.model = c.get("openai_model", "gpt-4o-mini")
-                self.client = "openai"
-                return
-            except ImportError:
-                pass
+            self.provider = "openai"
+            self.model = c.get("openai_model", "gpt-4o-mini")
+            return
+        # Anthropic (paid fallback)
+        if mode in ("auto", "anthropic") and os.environ.get("ANTHROPIC_API_KEY"):
+            self.provider = "anthropic"
+            self.model = c.get("anthropic_model", "claude-3-5-sonnet-latest")
+            return
 
     def available(self) -> bool:
-        return self.provider is not None and self.client is not None
+        return self.provider is not None
 
     def extract(self, text: str) -> dict[str, Any] | None:
         if not self.available():
@@ -89,28 +90,44 @@ class LLMExtractor:
         return self._parse(raw)
 
     def _call(self, text: str) -> str | None:
+        system = "You extract structured evidence from fashion e-commerce conversations."
+        user_msg = EXTRACTION_PROMPT + text
         try:
-            if self.provider == "anthropic":
-                import anthropic
-                message = anthropic.Anthropic().messages.create(
-                    model=self.model, max_tokens=800,
-                    temperature=self.temperature,
-                    system="You extract structured evidence from fashion e-commerce conversations.",
-                    messages=[{"role": "user", "content": EXTRACTION_PROMPT + text}],
-                )
-                return message.content[0].text
-            else:
-                import openai
-                completion = openai.OpenAI().chat.completions.create(
+            if self.provider == "groq":
+                from groq import Groq
+                resp = Groq().chat.completions.create(
                     model=self.model, temperature=self.temperature, max_tokens=800,
-                    messages=[
-                        {"role": "system", "content": "You extract structured evidence from fashion e-commerce conversations."},
-                        {"role": "user", "content": EXTRACTION_PROMPT + text},
-                    ],
+                    messages=[{"role": "system", "content": system}, {"role": "user", "content": user_msg}],
+                )
+                return resp.choices[0].message.content
+            if self.provider == "gemini":
+                import google.generativeai as genai
+                genai.configure(api_key=os.environ["GOOGLE_API_KEY"])
+                model = genai.GenerativeModel(self.model)
+                resp = model.generate_content(
+                    f"{system}\n\n{user_msg}",
+                    generation_config=genai.GenerationConfig(
+                        temperature=self.temperature, max_output_tokens=800,
+                    ),
+                )
+                return resp.text
+            if self.provider == "openai":
+                from openai import OpenAI
+                completion = OpenAI().chat.completions.create(
+                    model=self.model, temperature=self.temperature, max_tokens=800,
+                    messages=[{"role": "system", "content": system}, {"role": "user", "content": user_msg}],
                 )
                 return completion.choices[0].message.content
+            if self.provider == "anthropic":
+                from anthropic import Anthropic
+                message = Anthropic().messages.create(
+                    model=self.model, max_tokens=800, temperature=self.temperature,
+                    system=system, messages=[{"role": "user", "content": user_msg}],
+                )
+                return message.content[0].text
         except Exception:
             return None
+        return None
 
     def _parse(self, raw: str) -> dict[str, Any] | None:
         fence = _JSON_FENCE.search(raw)

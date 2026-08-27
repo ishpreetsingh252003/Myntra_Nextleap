@@ -44,19 +44,20 @@ def load_plan() -> CollectionPlan:
         base = {"use_fixtures": False}
         if source == "google_play":
             base["app_ids"] = cfg.get("google_play_app_ids", [])
-            base["count"] = settings.get("count", 200)
+            base["max_pages"] = settings.get("max_pages", 2000)
+            base["page_size"] = settings.get("page_size", 100)
         elif source == "app_store":
             app_store = cfg.get("app_store", {})
             base["app_ids"] = cfg.get("app_store_app_ids", [])
             base["country"] = os.environ.get("APP_STORE_COUNTRY", "in")
             base["app_name"] = app_store.get("app_name", "myntra")
-            base["how_many"] = settings.get("how_many", 50)
+            base["how_many"] = settings.get("how_many", 100000)
         elif source == "reddit":
             reddit = cfg.get("reddit", {})
             base.update(
                 subreddits=reddit.get("subreddits", []),
                 keywords=reddit.get("keywords", []),
-                limit=settings.get("reddit_limit", 100),
+                limit=int(settings.get("reddit_limit", 1000)),
                 reddit_client_id=os.environ.get("REDDIT_CLIENT_ID", ""),
                 reddit_client_secret=os.environ.get("REDDIT_CLIENT_SECRET", ""),
                 reddit_user_agent=os.environ.get("REDDIT_USER_AGENT", "MyntraDiscoveryEngine/0.1"),
@@ -66,8 +67,8 @@ def load_plan() -> CollectionPlan:
             base.update(
                 api_key=os.environ.get("YOUTUBE_API_KEY", ""),
                 queries=yt.get("queries", []),
-                max_videos=yt.get("max_videos", 3),
-                max_comments=yt.get("max_comments", 30),
+                max_videos=int(settings.get("youtube_max_videos", 5)),
+                max_comments=int(settings.get("youtube_max_comments", 100)),
             )
         elif source == "quora":
             base["queries"] = cfg.get("quora", {}).get("queries", [])

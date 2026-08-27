@@ -59,3 +59,11 @@ phase5/data/output/*.sqlite3
 phase6/data/output/*.sqlite3
 phase6/data/output/*.db
 !phase6/data/output/*.md
+
+# App (FastAPI backend on Render) — regenerated corpora
+app/data/raw/*
+app/data/*.jsonl
+app/data/corpus.sqlite3
+app/data/output/*
+!app/data/output/**/*.md
+!app/data/output/.gitkeep

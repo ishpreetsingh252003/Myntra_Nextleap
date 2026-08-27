@@ -21,3 +21,13 @@ Each phase lives in its own folder. All 6 phases are implemented.
 4. Behaviour, Barrier & Unmet-Need Extraction → [phase4/README.md](phase4/README.md)
 5. Segmentation, Theme Clustering & Quantification → [phase5/README.md](phase5/README.md)
 6. Opportunity Ranking, Evidence DB & Discovery Report → [phase6/README.md](phase6/README.md)
+
+## Run the whole thing (deployable backend)
+
+- **[FastAPI backend](app/README.md)** — one API that scrapes live reviews, runs all 6 phases with free Groq/Gemini LLMs, and returns ranked opportunities backed by evidence quotes. Deploys to Render (`render.yaml`).
+- **[One-command orchestrator](scripts/orchestrate.py)** — runs the full pipeline from terminal:
+  ```bash
+  python scripts/orchestrate.py --fixtures
+  python scripts/orchestrate.py --sources google_play app_store --from-date 2026-01-01 --to-date 2026-08-19
+  ```
+- Frontend lives separately (Vercel) and calls the backend's `/api/*` endpoints.

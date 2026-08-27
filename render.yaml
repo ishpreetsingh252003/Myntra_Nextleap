@@ -1,0 +1,20 @@
+# Render.com blueprint for the Discovery Engine backend.
+services:
+  - type: web
+    name: myntra-discovery-api
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r app/requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /api/health
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false   # set your free key in the Render dashboard
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: REDDIT_CLIENT_ID
+        sync: false
+      - key: REDDIT_CLIENT_SECRET
+        sync: false
+      - key: YOUTUBE_API_KEY
+        sync: false
